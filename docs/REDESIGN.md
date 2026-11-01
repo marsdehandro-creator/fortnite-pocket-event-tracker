@@ -1,42 +1,26 @@
 # Redesign & migration notes — Fortnite Pocket Event Tracker
 
-Written 2026-11-01 for the rebuild of the previous single-file checklist site into this tracker.
+Written 2026-11-01, when the repository's previous single-file site was rebuilt from scratch as this tracker. The migration is complete. This file records the architecture and the decisions behind it.
 
-## 1. Repository audit (before)
+## 1. What was replaced
 
-| Path | What it was | Outcome |
+| Path | Before | Now |
 |---|---|---|
-| `index.html` | ~2,000-line single file: inline CSS + JS, collectible checklist (Captured/New views, mastery, achievements, daily roast), Fortnite News feed | **Replaced** by the Vite/React app. Old version stays in git history (last commit `753d458`). |
-| `.github/workflows/pages.yml` | Deployed the repo root as-is | **Rewritten**: `npm ci` → `npm test` → `npm run build` → deploy `dist/` |
-| `.claude/launch.json` | Local static-server preview config | **Rewritten** for `vite dev` under the new name |
-| *(none)* | No README, manifest, package.json, metadata, tests | **Added** |
+| `index.html` | ~2,000-line single file with inline CSS + JS (a different product) | Vite entry point + SEO shell. The previous site exists only in git history. |
+| `.github/workflows/pages.yml` | Deployed the repo root as-is | `npm ci` → `npm test` → `npm run build` → deploy `dist/` |
+| `.claude/launch.json` | Static-server preview | `vite dev` (`pocket-event-tracker`) |
+| *(none)* | No README, manifest, package.json, metadata or tests | Added |
 
-No external API paths, routes, package names or structured data existed in the old project. The old app's data lived in the visitor's `localStorage` under `fortniteSprite*` keys.
+## 2. Rebrand scope (all done)
 
-## 2. Everything carrying the old branding
+Browser title, H1 and metadata · package name (`fortnite-pocket-event-tracker`) · workflow and launch-config names · every code identifier, constant and CSS class (full rewrite) · localStorage prefix (`fortnite-pocket-event-tracker:`) · GitHub repository name and description · GitHub Pages URL · local folder (now `C:\Users\Dehandro\FortnitePocketEventTracker`, outside OneDrive) · scheduled maintenance tasks (the old ones are deleted; one new weekly data-refresh task exists, see §11).
 
-| Item | Old | New | Done by |
-|---|---|---|---|
-| Browser title, H1, metadata | old checklist name | Fortnite Pocket Event Tracker | ✅ this change |
-| Package name | *(none)* | `fortnite-pocket-event-tracker` | ✅ |
-| Workflow name | "Deploy to GitHub Pages" | "Deploy Fortnite Pocket Event Tracker" | ✅ |
-| Launch config name | old name | `pocket-event-tracker` | ✅ |
-| Code identifiers, constants, CSS classes | old domain names | new domain (`UpdateEvent`, `CompetitiveEvent`, …) | ✅ (full rewrite) |
-| localStorage prefix | `fortniteSprite*` | `fortnite-pocket-event-tracker:` | ✅ new keys; old keys left untouched |
-| **GitHub repository name** | `fortnite-sprite-checklist` | `fortnite-pocket-event-tracker` | ⏳ owner action (Settings → Rename) |
-| **Pages URL** | `…github.io/fortnite-sprite-checklist/` | `…github.io/fortnite-pocket-event-tracker/` | follows the repo rename |
-| **Local folder** | `OneDrive\Desktop\FortniteSpriteChecklist` | e.g. `FortnitePocketEventTracker` | ⏳ owner action (see §10) |
-| Scheduled maintenance tasks | old sync + news tasks | retire / repurpose | ⏳ owner decision (see §10) |
+## 3. Consequences of the rebuild
 
-Verified: a production build (`dist/`) and all source files contain zero matches for the old terms.
-
-## 3. Breaking changes
-
-1. **The URL changes when the repo is renamed.** GitHub redirects git remotes and repo web pages, but **not GitHub Pages sites**. The old `…/fortnite-sprite-checklist/` URL will 404. If that matters, keep a tiny repo under the old name with a redirect page.
-2. **The old checklist is gone from the live site.** Visitors' saved progress stays in their browser (`localStorage` is not cleared), but nothing reads it any more.
-3. **A build step now exists.** Pages must deploy via the Actions workflow (already the setting), and deploys now fail if tests fail. That's intentional.
-4. **Both scheduled maintenance tasks are already broken:** they point at the pre-OneDrive path `C:\Users\Dehandro\Desktop\…`, and they edit data structures that no longer exist.
-5. **`robots.txt` on a project page is advisory only.** Crawlers read `robots.txt` from the domain root (`marsdehandro-creator.github.io/robots.txt`). Submit `sitemap.xml` in Google Search Console instead.
+1. **GitHub Pages doesn't redirect after a repo rename.** The previous site URL returns 404; only git remotes and repo web pages redirect.
+2. **Visitors' saved data from the previous site** stays in their browser (`localStorage` was not cleared), but nothing reads it.
+3. **A build step now exists.** Pages deploys through the Actions workflow, and a deploy fails if tests fail. That's intentional.
+4. **`robots.txt` on a project page is advisory only.** Crawlers read `robots.txt` from the domain root (`marsdehandro-creator.github.io/robots.txt`). Submit `sitemap.xml` in Google Search Console instead.
 
 ## 4. Project structure
 
@@ -154,18 +138,20 @@ The second example is **illustrative only**, to show the shape. It is not in the
 5. ✅ SEO: meta, OG/Twitter with a generated 1200×630 card, JSON-LD (site + events), sitemap, manifest, icons
 6. ✅ CI: test-gated Pages deploy
 7. ✅ Browser verification: desktop + 375px mobile, upcoming and simulated maintenance states, filter, persistence, toggles, zero console errors
-8. ⏳ Owner steps in §10
-9. ⏳ Ongoing: keep `events.json`/`updates.json` current (manually, a scheduled task, or an API)
+8. ✅ Repository renamed, deployed via the test-gated workflow, verified live
+9. ✅ Weekly automated data refresh (see §11)
 
-## 10. Migration checklist
+## 10. Migration steps (complete)
 
-- [x] Old app preserved in git history (`753d458`)
-- [x] Unshipped local edits from the previous session saved as a patch outside the repo
-- [x] New app built, tested and verified locally
-- [ ] Rename the GitHub repo to `fortnite-pocket-event-tracker` (Settings → General). If you keep the old name, change `VITE_SITE_URL` in `.env` first.
-- [ ] Update the local remote: `git remote set-url origin https://github.com/marsdehandro-creator/fortnite-pocket-event-tracker.git`
-- [ ] Push to `master`. Confirm Settings → Pages → Source is "GitHub Actions", then watch the workflow go green.
-- [ ] Update the repo description/topics on GitHub to the new name
-- [ ] Retire the old sync scheduled task. Repurpose the news task into a weekly `updates.json` / `events.json` refresh with the correct path.
-- [ ] Optional: rename the local folder and move it out of OneDrive. OneDrive tries to sync `node_modules/`, which is slow and can lock files mid-install.
+- [x] New app built, tested and verified locally and live
+- [x] GitHub repo renamed, description and homepage updated, local remote repointed
+- [x] Pushed to `master`; Pages deploys from GitHub Actions
+- [x] Old scheduled maintenance tasks deleted
+- [x] Project moved out of OneDrive to `C:\Users\Dehandro\FortnitePocketEventTracker`
 - [ ] Optional: submit `sitemap.xml` in Google Search Console
+
+## 11. Keeping the data fresh
+
+A Claude Code scheduled task, **`weekly-pocket-tracker-data-refresh`** (Mondays 09:00 SAST), researches Epic's announced downtime and the competitive schedule. It updates `src/data/updates.json` / `events.json` under the rules in the README, runs `npm test` and `npm run build`, and commits/pushes only if both pass. Every run ends with a report of what changed and what it couldn't confirm.
+
+Manual edits are always fine between runs. The task merges with what's there and never deletes records that are still upcoming.
