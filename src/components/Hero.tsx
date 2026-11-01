@@ -1,39 +1,160 @@
+import type { LiveStatusState } from "../hooks/useLiveStatus";
 import type { TrackerData } from "../types/events";
-import { formatDuration, getCountdown } from "../utils/countdown";
-import { getLiveUpdateId, getScheduleStatus, getUpdateEnd } from "../utils/status";
-import { formatSASTLongDate, formatSASTTime, formatSASTWhen, SAST_LABEL } from "../utils/time";
-import { NextEventCard } from "./NextEventCard";
-import { SeasonPanel } from "./SeasonPanel";
-import { StatusPill } from "./StatusPill";
+import { getCountdown } from "../utils/countdown";
+import { EVENT_TYPE_LABEL, FORMAT_LABEL } from "../utils/labels";
+import { EPIC_STATUS_PAGE } from "../utils/liveStatus";
+import { getCurrentSeason } from "../utils/seasons";
+import { getNextItem, getScheduleStatus } from "../utils/status";
+import { formatSASTLongDate, formatSASTShortDate, formatSASTTime, SAST_LABEL } from "../utils/time";
+import { ArrowRight, ClockIcon, PulseIcon, ShieldIcon, TrophyIcon } from "./Icons";
+import type { FocusKind } from "./Panel";
 
 interface HeroProps {
   now: number;
   data: TrackerData;
+  live: LiveStatusState;
+  seasonIntelOpen: boolean;
+  onToggleSeasonIntel: () => void;
+  onFocus: (kind: FocusKind, id: string) => void;
 }
 
-/** How long after servers return the hero keeps saying "back since …". */
-const JUST_BACK_MS = 24 * 3_600_000;
+const LIVE_TONE = { online: "green", degraded: "orange", maintenance: "red", down: "red" } as const;
 
-export function Hero({ now, data }: HeroProps) {
-  const { updates, events } = data;
-  const schedule = getScheduleStatus(updates, now);
+function TimeCard({ now }: { now: number }) {
+  return (
+    <article className="stat-card" aria-label="Current South African time">
+      <p className="stat-card__label">Current time · {SAST_LABEL}</p>
+      <div className="stat-card__body">
+        <ClockIcon className="stat-card__icon stat-card__icon--cyan" />
+        <div>
+          <p className="stat-card__clock">
+            <time dateTime={new Date(now).toISOString()}>{formatSASTTime(now, { seconds: true })}</time>
+          </p>
+          <p className="stat-card__sub">{formatSASTLongDate(now)}</p>
+          <p className="stat-card__fine">Johannesburg · UTC+2</p>
+        </div>
+      </div>
+    </article>
+  );
+}
 
-  let detail: string;
-  if (schedule.level === "down" && schedule.update) {
-    const end = getUpdateEnd(schedule.update);
-    detail = `${schedule.update.name} — estimated return ${formatSASTTime(end)} ${SAST_LABEL} (in ${formatDuration(getCountdown(end, now).totalMs)}).`;
-  } else if (schedule.level === "scheduled" && schedule.update) {
-    const start = schedule.update.downtimeStartsAt;
-    detail = `${schedule.update.version ? `v${schedule.update.version}` : schedule.update.name} downtime starts ${formatSASTWhen(start, now)} (in ${formatDuration(getCountdown(start, now).totalMs)}).`;
-  } else {
-    const live = updates.find((u) => u.id === getLiveUpdateId(updates, now));
-    const end = live && getUpdateEnd(live);
-    detail =
-      live && end && now - end.getTime() < JUST_BACK_MS
-        ? `${live.version ? `v${live.version}` : live.name} is live — servers back since ${formatSASTWhen(end, now)}. No further downtime announced for 48 hours.`
-        : "No downtime announced for the next 48 hours.";
+function StatusCard({ now, data, live }: { now: number; data: TrackerData; live: LiveStatusState }) {
+  const schedule = getScheduleStatus(data.updates, now);
+  const s = live.status;
+  const tone = s ? LIVE_TONE[s.level] : schedule.tone;
+  const headline = s ? s.label : schedule.level === "down" ? "Maintenance" : "Status";
+  const detail = s ? s.detail : schedule.label;
+  const upcoming = schedule.level === "scheduled" && schedule.update;
+
+  return (
+    <article className={`stat-card stat-card--status stat-card--${tone}`}>
+      <p className="sr-only" aria-live="polite">
+        Fortnite status: {headline}. {detail}
+      </p>
+      <p className="stat-card__label">Fortnite status</p>
+      <div className="stat-card__body">
+        <span className={`big-dot big-dot--${tone}`} aria-hidden="true" />
+        <p className="stat-card__headline">{headline}</p>
+      </div>
+      <p className="stat-card__sub stat-card__sub--pulse">
+        <PulseIcon className={`pulse-icon pulse-icon--${tone}`} />
+        {detail}
+      </p>
+      {s?.incident && (
+        <p className="stat-card__fine">
+          Incident:{" "}
+          <a href={s.incident.url ?? EPIC_STATUS_PAGE} target="_blank" rel="noopener noreferrer">
+            {s.incident.name}
+          </a>
+        </p>
+      )}
+      {upcoming && (
+        <p className="stat-card__fine">
+          Next downtime {formatSASTShortDate(upcoming.downtimeStartsAt)} · {formatSASTTime(upcoming.downtimeStartsAt)} {SAST_LABEL}
+        </p>
+      )}
+      <p className="stat-card__source">
+        {s ? (
+          <>
+            Live from{" "}
+            <a href={EPIC_STATUS_PAGE} target="_blank" rel="noopener noreferrer">
+              Epic status
+            </a>{" "}
+            · {formatSASTTime(s.checkedAt)}
+          </>
+        ) : live.unavailable ? (
+          "Live status unavailable — showing announced schedule"
+        ) : (
+          "Checking Epic status…"
+        )}
+      </p>
+    </article>
+  );
+}
+
+function NextCard({ now, data, onFocus }: { now: number; data: TrackerData; onFocus: HeroProps["onFocus"] }) {
+  const next = getNextItem(data.updates, data.events, now);
+  if (!next) {
+    return (
+      <article className="stat-card">
+        <p className="stat-card__label">Next event</p>
+        <p className="stat-card__sub">Nothing scheduled yet — check back soon.</p>
+      </article>
+    );
   }
+  const isUpdate = next.kind === "update";
+  const title = isUpdate ? `${next.item.version ? `v${next.item.version} ` : ""}${next.item.name}` : next.item.name;
+  const meta = isUpdate ? "Downtime" : `${EVENT_TYPE_LABEL[next.item.type]} · ${FORMAT_LABEL[next.item.format]} · ${next.item.region}`;
+  const c = getCountdown(next.at, now);
+  const tiles: [number, string][] = c.days ? [[c.days, "d"], [c.hours, "h"], [c.minutes, "m"]] : [[c.hours, "h"], [c.minutes, "m"], [c.seconds, "s"]];
+  const label = next.inProgress ? (isUpdate ? "Happening now · back in" : "Live now · ends in") : isUpdate ? "Next downtime" : "Next event";
 
+  return (
+    <article className="stat-card stat-card--next">
+      <p className="stat-card__label">{label}</p>
+      <button type="button" className="stat-card__body stat-card__link" onClick={() => onFocus(isUpdate ? "update" : "event", next.item.id)}>
+        <TrophyIcon className="stat-card__icon stat-card__icon--gold" />
+        <span>
+          <span className="stat-card__title">{title}</span>
+          <span className="stat-card__sub">
+            {formatSASTShortDate(next.at)} · {formatSASTTime(next.at)} {SAST_LABEL}
+            <span className="sr-only"> · {meta}</span>
+          </span>
+        </span>
+      </button>
+      <div className="mini-countdown" role="timer" aria-label={`${label} ${tiles.map(([v, u]) => `${v}${u}`).join(" ")}`}>
+        {tiles.map(([v, u]) => (
+          <span key={u} className="mini-countdown__unit" aria-hidden="true">
+            <span className="mini-countdown__value">{String(v).padStart(2, "0")}</span>
+            <span className="mini-countdown__label">{u}</span>
+          </span>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function SeasonCard({ now, data, open, onToggle }: { now: number; data: TrackerData; open: boolean; onToggle: () => void }) {
+  const season = getCurrentSeason(data.seasons, now);
+  return (
+    <article className="stat-card stat-card--season">
+      <p className="stat-card__label">Current season</p>
+      <div className="stat-card__body">
+        <ShieldIcon className="stat-card__icon stat-card__icon--violet" />
+        <div>
+          <p className="stat-card__title stat-card__title--lg">{season ? season.name : "Between seasons"}</p>
+          <p className="stat-card__sub">{season ? (season.tagline ?? season.mapName) : "Servers are switching islands"}</p>
+        </div>
+      </div>
+      <button type="button" className="outline-button" aria-expanded={open} aria-controls="season-intel" onClick={onToggle}>
+        {open ? "Hide season intel" : "View season intel"}
+        <ArrowRight className={open ? "is-flipped" : ""} />
+      </button>
+    </article>
+  );
+}
+
+export function Hero({ now, data, live, seasonIntelOpen, onToggleSeasonIntel, onFocus }: HeroProps) {
   return (
     <section className="hero" id="top" aria-labelledby="hero-title">
       <div className="hero__intro">
@@ -42,31 +163,15 @@ export function Hero({ now, data }: HeroProps) {
           Fortnite <span className="text-gradient">Pocket Event Tracker</span>
         </h1>
         <p className="hero__subtitle">
-          Track Fortnite updates, downtime, maintenance windows, tournaments, cups, and competitive events in South
-          African time.
+          Track Fortnite updates, downtime, tournaments, cups, map changes, hidden secrets, and the best landing spots — all in South African
+          time.
         </p>
       </div>
-
-      <div className="hero__grid">
-        <article className="panel clock-panel" aria-label="Current South African time">
-          <p className="panel__label">Current time · {SAST_LABEL}</p>
-          <p className="clock">
-            <time dateTime={new Date(now).toISOString()}>{formatSASTTime(now, { seconds: true })}</time>
-          </p>
-          <p className="clock__date">{formatSASTLongDate(now)}</p>
-          <p className="clock__zone">Africa/Johannesburg · UTC+2</p>
-        </article>
-
-        <article className={`panel status-panel status-panel--${schedule.tone}`}>
-          <p className="panel__label">Server schedule</p>
-          <StatusPill tone={schedule.tone} label={schedule.label} pulse={schedule.level !== "clear"} size="md" />
-          <p className="status-panel__detail">{detail}</p>
-          <p className="status-panel__note">Based on announced schedules, not a live server check.</p>
-        </article>
-
-        <NextEventCard now={now} updates={updates} events={events} />
-
-        <SeasonPanel now={now} seasons={data.seasons} pois={data.pois} discoveries={data.discoveries} />
+      <div className="stat-grid">
+        <TimeCard now={now} />
+        <StatusCard now={now} data={data} live={live} />
+        <NextCard now={now} data={data} onFocus={onFocus} />
+        <SeasonCard now={now} data={data} open={seasonIntelOpen} onToggle={onToggleSeasonIntel} />
       </div>
     </section>
   );

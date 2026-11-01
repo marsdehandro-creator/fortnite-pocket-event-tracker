@@ -43,6 +43,7 @@ export function isSeason(v: unknown): v is Season {
     isString(v.id) &&
     isString(v.name) &&
     isString(v.mapName) &&
+    isOptString(v.tagline) &&
     isIsoWithOffset(v.startsAt) &&
     isOptIso(v.endsAt) &&
     (v.endsAt === undefined || Date.parse(v.endsAt as string) > Date.parse(v.startsAt)) &&
@@ -61,6 +62,7 @@ export function isMapDiscovery(v: unknown): v is MapDiscovery {
     isString(v.title) &&
     isString(v.summary) &&
     isOptString(v.details) &&
+    isOptString(v.imageUrl) &&
     isString(v.mapArea) &&
     isOptString(v.poiId) &&
     isOneOf(DISCOVERY_CATEGORIES, v.category) &&
@@ -89,6 +91,7 @@ export function isPOIRanking(v: unknown): v is POIRanking {
     isString(v.seasonId) &&
     isString(v.mapArea) &&
     isString(v.description) &&
+    isOptString(v.imageUrl) &&
     (v.status === "active" || v.status === "removed") &&
     scoresOk &&
     // a score without a reason is just a number — require the rationale

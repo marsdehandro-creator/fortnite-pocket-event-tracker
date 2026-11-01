@@ -3,11 +3,13 @@
 A Fortnite operations center in **South African time (SAST, UTC+2)**: update downtime, competitive events, the best places to land, map changes and newly discovered secrets, on one page.
 
 A mobile-first, single-page live-ops dashboard. It has:
-- a live SAST clock, schedule status and a season-intel strip
-- update/downtime countdowns with running-downtime timers
-- a competitive events hub filterable by Solo / Duos / Trios / Squads
-- **Best Landing Spots** POI power rankings with a map-changes feed
-- a **Map Discoveries** hub: a sticky right-hand panel on desktop, its own section on mobile
+- four headline cards: live SAST clock, **live Fortnite status** (from Epic's public status page), next event, current season (with expandable season intel and map changes)
+- update/downtime rows with countdowns and running-downtime timers
+- competitive events filterable by Solo / Duos / Trios / Squads
+- **Best Landing Spots**: POI power rankings with sort and filter chips
+- **Map Discoveries**: art cards with category filter, search and details
+- global search (press `/`) that jumps to any update, cup, POI, discovery or map change
+- decorative background artwork on desktop, hidden on mobile
 
 Unofficial fan project, not affiliated with or endorsed by Epic Games.
 
@@ -28,13 +30,13 @@ npm run build      # type-check + production build into dist/
 
 ```
 src/
-  components/   UI: Hero, SeasonPanel, UpdateTracker, EventsTracker, LandingSpots/POICard/MapChangesFeed,
-                DiscoveriesPanel/DiscoveryCard, shared primitives (ChipFilter, Countdown, StatusPill, …)
+  components/   UI: TopBar, Hero (stat cards), SeasonIntel, UpdatesPanel, EventsPanel, LandingPanel, DiscoveriesPanel,
+                SearchDialog, Footer, BackgroundArt, Artwork (generated tiles), Icons, shared primitives
   data/         six JSON data files + dataSource.ts (static/API providers)
-  hooks/        useNow (shared 1s clock), useTrackerData, usePersistentState
+  hooks/        useNow (shared 1s clock), useTrackerData, useLiveStatus (Epic status poll), usePersistentState
   types/        events.ts (updates, cups, TrackerData) · intel.ts (Season, MapDiscovery, POIRanking, MapChange)
-  utils/        time (SAST), countdown, status, poi (scoring/ranking), discoveries, seasons, validate*, labels
-  styles/       global.css (tokens + core) · intel.css (rankings + discoveries)
+  utils/        time (SAST), countdown, status, liveStatus, poi (scoring/ranking), discoveries, seasons, validate*, labels
+  styles/       global.css (tokens + primitives) · dashboard.css (layout + components) · art.css (background art)
 public/         favicon, app icons, OG image, web manifest
 docs/           REDESIGN.md — architecture and decisions
 ```
@@ -76,3 +78,13 @@ Set `VITE_TRACKER_API_URL` in `.env` (or as a build variable). The app then fetc
 ## Configuration
 
 `.env` holds public build settings: `VITE_SITE_URL` (canonical/OG URLs, `sitemap.xml`, `robots.txt`) and `VITE_TRACKER_API_URL`.
+
+## Live Fortnite status
+
+The status card polls `https://status.epicgames.com/api/v2/summary.json` every minute (CORS-enabled, no key) and reads only the **Fortnite** component group: Online / Degraded / Maintenance / Down, plus any active Fortnite incident. If the request fails, the card says so and falls back to the announced schedule. Parsing lives in `src/utils/liveStatus.ts` and is unit-tested.
+
+## Artwork
+
+- **Background art** (`src/components/BackgroundArt.tsx`, `src/styles/art.css`): purely decorative, `aria-hidden`, behind all content (z-index 0). It's confined to the empty side gutters and masked out before the content column. It shows on desktop (≥1280px), at reduced strength on large tablets (1024–1279px), and is hidden below 1024px. Strength is `--art-base` in `art.css`: **0.15 (variant B) is the default**. Preview the others with `?art=a` (10%) or `?art=c` (20%). The figures are original stylised SVG. To use your own licensed renders, put the files in `public/art/` and set `FIGURE_IMAGES` at the top of `BackgroundArt.tsx`; masking, grading and opacity still apply.
+- **Card art**: discovery cards and POI rows get generated artwork (`src/components/Artwork.tsx`). Add `"imageUrl"` to any record in `discoveries.json` or `pois.json` (a path under `public/` or an absolute URL) to use a real image instead.
+- **Season card**: set `"tagline"` on a season (e.g. "Chapter 7 mini-season") for the subtitle under its name.

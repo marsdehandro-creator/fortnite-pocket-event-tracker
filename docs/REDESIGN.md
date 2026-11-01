@@ -161,7 +161,7 @@ Manual edits are always fine between runs. The task merges with what's there and
 Two features turn the tracker into a full operations center:
 
 - **Best Landing Spots.** Every named POI on the current island is scored 0–10 for loot, mobility, materials, contest rate and competitive value. The overall score and rank are computed (`utils/poi.ts`) so every POI is judged on one scale. Filters: Solos/Duos/Trios/Squads/Competitive/Casual. Sorts: overall, best loot, most chests, lowest contest rate, best rotation (mobility), best competitive. POIs without evidence show "Awaiting rating"; early estimates show "Provisional" with their rationale. A map-changes feed (added/removed/buffed/nerfed/reworked/scheduled) sits on top, and a change linked to a POI badges that POI's card.
-- **Map Discoveries.** A sticky right-hand panel on desktop (1200px+) and its own section on mobile. It shows a "N Discoveries Logged" counter, search across title/summary/details/area, category filter, a featured card, a rarity indicator, a 7-day "New" badge, loot rating pips, and expand/collapse details. Obsolete finds are archived, never deleted, behind a "Show archived" toggle.
+- **Map Discoveries.** It shows a "N Discoveries Logged" counter, search across title/summary/details/area, category filter, a featured card, a rarity indicator, a 7-day "New" badge, loot rating pips, and expand/collapse details. Obsolete finds are archived, never deleted, behind a "Show archived" toggle.
 - **Season intel** in the hero shows island, season day, lobby size, POI and discovery counts, and season end.
 
 Data contracts are in `src/types/intel.ts`, with four new JSON files (`seasons`, `discoveries`, `pois`, `map-changes`). Runtime validation and cross-file reference checks are in `utils/validateIntel.ts`, enforced by `npm test`.
@@ -172,3 +172,25 @@ Data contracts are in `src/types/intel.ts`, with four new JSON files (`seasons`,
 - **Map changes:** 6, including two scheduled for 7 Nov.
 
 No chest counts existed yet, so none were invented. The weekly task replaces Provisional scores as real evidence appears.
+
+## 13. Dashboard redesign + background art (1 Nov 2026)
+
+The layout was rebuilt to match the owner's mockup:
+
+- **Top bar:** brand, section links, More menu, live clock, search, slide-over menu.
+- **Hero:** four stat cards: time, **live Fortnite status**, next event, current season.
+- **Season intel:** collapsible area holding the season stats and the map-changes timeline.
+- **2×2 panel grid:** Updates & Downtime, Competitive Events, Map Discoveries, Best Landing Spots. Each has compact rows or art cards that expand in place for full detail.
+- **Footer:** slim.
+
+Every earlier capability was kept: filters, sorts, search, provisional/unrated states, archiving, map-change badges and sources.
+
+**Live status** is now real: Epic's public Statuspage API (CORS `*`) is polled every minute, reading only the Fortnite component group, with a schedule-based fallback. Previously the site only read announced schedules.
+
+**Global search** (`/`) indexes updates, cups, POIs, discoveries and map changes. Selecting a result reveals the record: it expands the list, clears filters, opens the row and scrolls to it.
+
+**Background art** is a decorative layer: wash → figures → glow → vignette, under content at z 0.
+- **Placement:** the figures live only in the empty gutters, in containers masked to transparent before the content column. They can't overlap text or cards and are clipped so they never cause horizontal scroll.
+- **Responsive:** desktop at full strength, large tablets at 60%, hidden below 1024px.
+- **Variants:** compared at 10% (A), 15% (B) and 20% (C); **B is the default**. Preview the others with `?art=a` or `?art=c`.
+- **Artwork:** the figures are original stylised SVG with neon rim light, scanline texture and graffiti tags. They don't reproduce any specific character's likeness. Licensed renders can be dropped in via `FIGURE_IMAGES`.

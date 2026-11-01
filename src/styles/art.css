@@ -1,0 +1,134 @@
+/* ==========================================================================
+   Decorative background artwork (desktop only).
+   Stacking: body gradient → .bg-art (z 0: wash, figures, glow, vignette) → content (z 1).
+   ========================================================================== */
+
+.bg-art {
+  /* Base strength. Variants: A 0.10 · B 0.15 · C 0.20 */
+  --art-base: 0.15;
+  --art-opacity: var(--art-base);
+
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 0;
+  height: 1200px;
+  display: none;
+  overflow: clip; /* art can never widen the page */
+  pointer-events: none;
+  user-select: none;
+}
+.bg-art__defs {
+  position: absolute;
+}
+
+/* Soft colour wash behind the figures */
+.bg-art__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(520px 700px at 6% 34%, rgba(124, 58, 237, 0.2), transparent 70%),
+    radial-gradient(520px 700px at 94% 34%, rgba(59, 130, 246, 0.16), transparent 70%);
+}
+
+/*
+ * Each side container is exactly the empty gutter beside the content column (+40px tucked under the
+ * card edge). The mask lives here: solid across the gutter, fully transparent before the content starts,
+ * and fading out toward the bottom — so the art can never sit visibly behind text or cards.
+ */
+.bg-art__side {
+  --gutter-w: calc((100% - var(--max)) / 2);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--gutter-w) + 40px);
+  overflow: hidden;
+  -webkit-mask-image:
+    linear-gradient(var(--fade-dir), #000 0%, #000 55%, transparent 100%),
+    linear-gradient(to bottom, #000 50%, transparent 92%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(var(--fade-dir), #000 0%, #000 55%, transparent 100%),
+    linear-gradient(to bottom, #000 50%, transparent 92%);
+  mask-composite: intersect;
+}
+.bg-art__side--left {
+  --fade-dir: to right;
+  left: 0;
+}
+.bg-art__side--right {
+  --fade-dir: to left;
+  right: 0;
+}
+
+.bg-art__figure {
+  position: absolute;
+  top: 40px;
+  height: 1080px;
+  aspect-ratio: 600 / 1100;
+  opacity: var(--art-opacity);
+  /* blue/purple/cyan grade + ambient glow, applied to whatever artwork is used */
+  filter: saturate(1.25) hue-rotate(-8deg) drop-shadow(0 0 28px rgba(139, 92, 246, 0.35));
+}
+.bg-art__figure > svg,
+.bg-art__figure > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* Centre each figure's head in its gutter (head sits ~319px / ~284px from the figure's left edge). */
+.bg-art__figure--left {
+  left: calc((100vw - var(--max)) / 4 - 319px);
+}
+.bg-art__figure--right {
+  right: calc((100vw - var(--max)) / 4 - (589px - 284px));
+}
+
+/* Ambient glow + graffiti tags */
+.bg-art__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(260px 260px at 10% 22%, rgba(192, 38, 211, 0.12), transparent 70%),
+    radial-gradient(260px 260px at 90% 26%, rgba(34, 211, 238, 0.1), transparent 70%);
+  mix-blend-mode: screen;
+}
+.bg-art__tag text {
+  font-family: var(--font-display);
+  font-size: 58px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  fill: none;
+  stroke: #a78bfa;
+  stroke-width: 2.2;
+}
+
+/* Vignette: fades everything into the page at the edges and bottom */
+.bg-art__vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(5, 6, 15, 0) 60%, var(--bg) 100%),
+    radial-gradient(ellipse 120% 90% at 50% 30%, transparent 55%, rgba(5, 6, 15, 0.65) 100%);
+}
+
+/* Large tablet / small laptop: art on, but quieter */
+@media (min-width: 1024px) {
+  .bg-art {
+    display: block;
+    --art-opacity: calc(var(--art-base) * 0.6);
+  }
+}
+/* Desktop: full strength */
+@media (min-width: 1280px) {
+  .bg-art {
+    --art-opacity: var(--art-base);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .bg-art {
+    display: none;
+  }
+}

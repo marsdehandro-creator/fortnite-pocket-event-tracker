@@ -1,98 +1,222 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { DiscoveryCategory, MapDiscovery, Season } from "../types/intel";
 import { usePersistentState } from "../hooks/usePersistentState";
-import { countByCategory, filterDiscoveries, pickFeatured } from "../utils/discoveries";
-import { DISCOVERY_CATEGORY_LABEL } from "../utils/labels";
+import { countByCategory, filterDiscoveries, isNewDiscovery, pickFeatured } from "../utils/discoveries";
+import { DISCOVERY_CATEGORY_LABEL, DISCOVERY_RARITY_LABEL } from "../utils/labels";
 import { seasonName } from "../utils/seasons";
+import { formatSASTShortDate } from "../utils/time";
 import { DISCOVERY_CATEGORIES } from "../utils/validateIntel";
+import { DiscoveryArt } from "./Artwork";
 import { ChipFilter } from "./ChipFilter";
-import { DiscoveryCard } from "./DiscoveryCard";
+import { ConfidenceBadge } from "./ConfidenceBadge";
+import { ChevronRight, CloseIcon, MapIcon, SearchIcon } from "./Icons";
+import { LootRating, Panel, useFocusTarget, type FocusRequest } from "./Panel";
+import { SourceLink } from "./SourceLink";
 
 type CategoryValue = DiscoveryCategory | "all";
 const CATEGORY_OPTIONS: CategoryValue[] = ["all", ...DISCOVERY_CATEGORIES];
 const isCategoryValue = (v: unknown): v is CategoryValue => CATEGORY_OPTIONS.includes(v as CategoryValue);
+const COLLAPSED_TILES = 3;
 
-interface DiscoveriesPanelProps {
-  discoveries: MapDiscovery[];
-  seasons: Season[];
-  now: number;
+/** Short plural chip labels, as on the dashboard. */
+const CHIP_LABEL: Record<DiscoveryCategory, string> = {
+  "secret-location": "Secret Locations",
+  "loot-route": "Loot Routes",
+  "easter-egg": "Easter Eggs",
+  "rotation-route": "Rotations",
+  "hidden-chest-area": "Hidden Chests",
+  "npc-spawn": "NPCs",
+  "vehicle-spawn": "Vehicles",
+  "competitive-advantage": "Comp Edge",
+};
+
+function Tile({ d, now, selected, featured, onSelect }: { d: MapDiscovery; now: number; selected: boolean; featured: boolean; onSelect: () => void }) {
+  return (
+    <button
+      type="button"
+      className={`tile tile--${d.rarity}${selected ? " is-selected" : ""}${featured ? " tile--featured" : ""}${d.status === "archived" ? " tile--archived" : ""}`}
+      id={`discovery-${d.id}`}
+      aria-pressed={selected}
+      aria-controls="discovery-detail"
+      onClick={onSelect}
+    >
+      <span className="tile__art">
+        {d.imageUrl ? <img src={d.imageUrl} alt="" loading="lazy" /> : <DiscoveryArt id={d.id} category={d.category} rarity={d.rarity} />}
+        <span className="tile__category">{DISCOVERY_CATEGORY_LABEL[d.category]}</span>
+        {isNewDiscovery(d, now) && <span className="new-badge">New</span>}
+        {d.status === "archived" && <span className="archived-badge">Archived</span>}
+        <ChevronRight className="tile__chev" />
+      </span>
+      <span className="tile__body">
+        <span className="tile__title">{d.title}</span>
+        <span className="tile__summary">{d.summary}</span>
+        <span className="tile__date">
+          <span className={`rarity rarity--${d.rarity}`}>
+            <span className="rarity__gem" aria-hidden="true" />
+            {DISCOVERY_RARITY_LABEL[d.rarity]}
+          </span>
+          Added {formatSASTShortDate(d.addedAt)}
+        </span>
+      </span>
+    </button>
+  );
 }
 
-export function DiscoveriesPanel({ discoveries, seasons, now }: DiscoveriesPanelProps) {
-  const [query, setQuery] = useState("");
+function Detail({ d, season, onClose }: { d: MapDiscovery; season: string; onClose: () => void }) {
+  return (
+    <div className={`discovery-detail discovery-detail--${d.rarity}`} id="discovery-detail" role="region" aria-label={`${d.title} details`}>
+      <div className="discovery-detail__head">
+        <div>
+          <p className="row__kicker">
+            {DISCOVERY_CATEGORY_LABEL[d.category]} · {DISCOVERY_RARITY_LABEL[d.rarity]}
+          </p>
+          <h3>{d.title}</h3>
+        </div>
+        <button type="button" className="icon-button" aria-label="Close details" onClick={onClose}>
+          <CloseIcon />
+        </button>
+      </div>
+      <p>{d.summary}</p>
+      {d.details && <p className="discovery-detail__more">{d.details}</p>}
+      {d.status === "archived" && d.archivedReason && (
+        <p className="discovery-detail__archived">
+          Archived {d.archivedAt ? formatSASTShortDate(d.archivedAt) : ""}: {d.archivedReason}
+        </p>
+      )}
+      <dl className="discovery-detail__facts">
+        <div>
+          <dt>Map area</dt>
+          <dd>{d.mapArea}</dd>
+        </div>
+        <div>
+          <dt>Loot</dt>
+          <dd>
+            <LootRating value={d.lootRating} />
+          </dd>
+        </div>
+        <div>
+          <dt>Season</dt>
+          <dd>{season}</dd>
+        </div>
+        <div>
+          <dt>Added</dt>
+          <dd>{formatSASTShortDate(d.addedAt)}</dd>
+        </div>
+      </dl>
+      <div className="row__footer">
+        <ConfidenceBadge confidence={d.confidence} />
+        <SourceLink url={d.sourceUrl} />
+      </div>
+    </div>
+  );
+}
+
+export function DiscoveriesPanel({ discoveries, seasons, now, focus }: { discoveries: MapDiscovery[]; seasons: Season[]; now: number; focus: FocusRequest | null }) {
   const [category, setCategory] = usePersistentState<CategoryValue>("discovery-category", "all", isCategoryValue);
+  const [query, setQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const active = discoveries.filter((d) => d.status === "active");
   const archivedCount = discoveries.length - active.length;
   const featured = pickFeatured(discoveries);
   const isFiltering = query.trim() !== "" || category !== "all";
 
-  const results = filterDiscoveries(discoveries, { query, category, includeArchived: showArchived });
-  // While browsing unfiltered, the featured card sits on top instead of repeating in the list.
-  const list = !isFiltering && featured ? results.filter((d) => d.id !== featured.id) : results;
+  let list = filterDiscoveries(discoveries, { query, category, includeArchived: showArchived });
+  if (!isFiltering && featured) list = [featured, ...list.filter((d) => d.id !== featured.id)];
+  const visible = expanded || isFiltering ? list : list.slice(0, COLLAPSED_TILES);
   const counts = countByCategory(showArchived ? discoveries : active);
-  // Only show categories that have something in them (plus "All" and the current choice).
   const options = CATEGORY_OPTIONS.filter((c) => c === "all" || c === category || (counts[c] ?? 0) > 0);
+  const selected = discoveries.find((d) => d.id === selectedId) ?? null;
+
+  useFocusTarget("discovery", focus, (id) => {
+    const target = discoveries.find((d) => d.id === id);
+    setCategory("all");
+    setQuery("");
+    setExpanded(true);
+    if (target?.status === "archived") setShowArchived(true);
+    setSelectedId(id);
+  });
+
+  const toggleSearch = () => {
+    setSearchOpen((open) => {
+      if (open) setQuery("");
+      else setTimeout(() => searchRef.current?.focus(), 0);
+      return !open;
+    });
+  };
 
   return (
-    <aside className="discoveries" aria-labelledby="discoveries">
-      <header className="discoveries__header">
-        <p className="eyebrow">Secrets hub</p>
-        <h2 id="discoveries">Map Discoveries</h2>
-        <p className="discoveries__count">
+    <Panel
+      id="discoveries"
+      icon={<MapIcon />}
+      title="Map Discoveries"
+      meta={
+        <>
           <strong>{active.length}</strong> {active.length === 1 ? "Discovery" : "Discoveries"} Logged
-          {archivedCount > 0 && <span> · {archivedCount} archived</span>}
-        </p>
-      </header>
-
-      <div className="discoveries__controls">
-        <label className="search">
-          <span className="sr-only">Search discoveries</span>
-          <svg viewBox="0 0 20 20" aria-hidden="true" className="search__icon">
-            <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="2" />
-            <path d="M13 13l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          </svg>
-          <input
-            type="search"
-            placeholder="Search secrets, POIs, loot…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </label>
+        </>
+      }
+      className="dash-panel--discoveries"
+    >
+      <div className="panel-tools">
         <ChipFilter
           options={options}
           value={category}
           onChange={setCategory}
           counts={counts}
-          label={(c) => (c === "all" ? "All" : DISCOVERY_CATEGORY_LABEL[c])}
+          label={(c) => (c === "all" ? "All" : CHIP_LABEL[c])}
           ariaLabel="Filter discoveries by category"
-          className="segmented--wrap"
+          className="segmented--panel"
         />
-      </div>
-
-      <p className="sr-only" aria-live="polite">
-        {isFiltering ? `${results.length} matching discoveries` : ""}
-      </p>
-      <div className="discoveries__list">
-        {!isFiltering && featured && (
-          <DiscoveryCard discovery={featured} seasonName={seasonName(seasons, featured.seasonId)} now={now} featured />
-        )}
-        {list.map((d) => (
-          <DiscoveryCard key={d.id} discovery={d} seasonName={seasonName(seasons, d.seasonId)} now={now} />
-        ))}
-        {!list.length && (isFiltering || !featured) && (
-          <p className="empty-state">
-            {isFiltering ? "No discoveries match that search." : "No discoveries logged yet this season — check back after the first week."}
-          </p>
-        )}
-      </div>
-
-      {archivedCount > 0 && (
-        <button type="button" className="ghost-button" aria-pressed={showArchived} onClick={() => setShowArchived((v) => !v)}>
-          {showArchived ? "Hide" : "Show"} archived ({archivedCount})
+        <button type="button" className={`icon-button${searchOpen ? " is-active" : ""}`} aria-label="Search discoveries" aria-expanded={searchOpen} onClick={toggleSearch}>
+          <SearchIcon />
         </button>
+      </div>
+      {searchOpen && (
+        <label className="search search--panel">
+          <span className="sr-only">Search discoveries</span>
+          <SearchIcon className="search__icon" />
+          <input ref={searchRef} type="search" placeholder="Search secrets, POIs, loot…" value={query} onChange={(e) => setQuery(e.target.value)} />
+        </label>
       )}
-    </aside>
+      <p className="sr-only" aria-live="polite">
+        {isFiltering ? `${list.length} matching discoveries` : ""}
+      </p>
+
+      {visible.length ? (
+        <div className="tiles">
+          {visible.map((d) => (
+            <Tile
+              key={d.id}
+              d={d}
+              now={now}
+              featured={!isFiltering && d.id === featured?.id}
+              selected={selectedId === d.id}
+              onSelect={() => setSelectedId((cur) => (cur === d.id ? null : d.id))}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="empty-state">{isFiltering ? "No discoveries match that search." : "No discoveries logged yet this season — check back after the first week."}</p>
+      )}
+
+      {selected && <Detail d={selected} season={seasonName(seasons, selected.seasonId)} onClose={() => setSelectedId(null)} />}
+
+      <div className="panel-foot">
+        {!isFiltering && list.length > COLLAPSED_TILES && (
+          <button type="button" className="text-button" aria-expanded={expanded} onClick={() => setExpanded((v) => !v)}>
+            {expanded ? "Show fewer" : `View all ${list.length} discoveries`}
+          </button>
+        )}
+        {archivedCount > 0 && (
+          <button type="button" className="text-button" aria-pressed={showArchived} onClick={() => setShowArchived((v) => !v)}>
+            {showArchived ? "Hide" : "Show"} archived ({archivedCount})
+          </button>
+        )}
+      </div>
+    </Panel>
   );
 }

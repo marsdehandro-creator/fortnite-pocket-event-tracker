@@ -14,6 +14,8 @@ export interface Season {
   /** Referenced by discoveries, POIs and map changes, e.g. "c7-treasure-hunters". */
   id: string;
   name: string;
+  /** Short descriptor under the name, e.g. "Chapter 7 mini-season". */
+  tagline?: string;
   /** Battle Royale island name. */
   mapName: string;
   startsAt: IsoDateString;
@@ -53,6 +55,8 @@ export interface MapDiscovery {
   details?: string;
   /** Human-readable area, e.g. "The $.$. Rocky, east coast". */
   mapArea: string;
+  /** Optional artwork (path under public/ or absolute URL). Generated art is used when omitted. */
+  imageUrl?: string;
   /** Links the discovery to a POI in pois.json when it sits in one. */
   poiId?: string;
   category: DiscoveryCategory;
@@ -91,6 +95,8 @@ export interface POIRanking {
   id: string;
   name: string;
   seasonId: string;
+  /** Optional thumbnail (path under public/ or absolute URL). A generated map tile is used when omitted. */
+  imageUrl?: string;
   /** Where on the island, e.g. "North-west". */
   mapArea: string;
   description: string;
