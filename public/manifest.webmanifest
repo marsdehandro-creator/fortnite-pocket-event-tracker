@@ -1,0 +1,15 @@
+{
+  "name": "Fortnite Pocket Event Tracker",
+  "short_name": "Pocket Tracker",
+  "description": "Track Fortnite maintenance, update downtime, tournaments, cash cups, FNCS events, and competitive schedules in South African time.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05060a",
+  "theme_color": "#05060a",
+  "lang": "en-ZA",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

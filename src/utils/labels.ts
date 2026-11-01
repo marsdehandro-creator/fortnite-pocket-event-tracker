@@ -1,0 +1,72 @@
+import type {
+  CompetitiveEventType,
+  CompetitiveStatus,
+  Confidence,
+  Region,
+  TeamFormat,
+  UpdateKind,
+  UpdateStatus,
+} from "../types/events";
+
+export const UPDATE_STATUS_LABEL: Record<UpdateStatus, string> = {
+  upcoming: "Upcoming",
+  maintenance: "Maintenance",
+  live: "Live",
+  completed: "Completed",
+};
+
+export const EVENT_STATUS_LABEL: Record<CompetitiveStatus, string> = {
+  upcoming: "Upcoming",
+  active: "Active",
+  finished: "Finished",
+};
+
+export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = {
+  "season-launch": "Season launch",
+  patch: "Patch",
+  hotfix: "Hotfix",
+  "service-maintenance": "Service maintenance",
+};
+
+export const EVENT_TYPE_LABEL: Record<CompetitiveEventType, string> = {
+  "cash-cup": "Cash Cup",
+  "victory-cup": "Victory Cup",
+  fncs: "FNCS",
+  "creator-cup": "Creator Cup",
+  "ranked-cup": "Ranked Cup",
+  tournament: "Tournament",
+};
+
+export const FORMAT_LABEL: Record<TeamFormat, string> = {
+  solo: "Solo",
+  duos: "Duos",
+  trios: "Trios",
+  squads: "Squads",
+};
+
+export const FORMATS: TeamFormat[] = ["solo", "duos", "trios", "squads"];
+
+export const REGION_LABEL: Record<Region, string> = {
+  EU: "Europe",
+  ME: "Middle East",
+  NAC: "NA Central",
+  NAW: "NA West",
+  BR: "Brazil",
+  ASIA: "Asia",
+  OCE: "Oceania",
+};
+
+/** Regions South African players normally queue on — highlighted in the UI. */
+export const LOCAL_REGIONS: Region[] = ["EU", "ME"];
+
+export const CONFIDENCE_LABEL: Record<Confidence, string> = {
+  official: "Official",
+  reported: "Reported",
+  estimated: "Estimated",
+};
+
+export const CONFIDENCE_HINT: Record<Confidence, string> = {
+  official: "Announced by Epic Games",
+  reported: "Reported by trusted sources, not yet confirmed by Epic",
+  estimated: "Estimated from typical timings — may change",
+};

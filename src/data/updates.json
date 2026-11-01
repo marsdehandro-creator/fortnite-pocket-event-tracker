@@ -1,0 +1,52 @@
+{
+  "updatedAt": "2026-11-01T02:00:00+02:00",
+  "items": [
+    {
+      "id": "v43-00-treasure-hunters",
+      "name": "Treasure Hunters mini-season",
+      "version": "43.00",
+      "kind": "season-launch",
+      "matchmakingDisabledAt": "2026-11-01T06:30:00+02:00",
+      "downtimeStartsAt": "2026-11-01T07:00:00+02:00",
+      "expectedEndAt": "2026-11-01T10:00:00+02:00",
+      "confidence": "official",
+      "notes": "Ends Chapter 7 Season 4 \"Override\" and starts a new Ranked season. Epic's status window runs 07:00–10:00 SAST with no promised return time — season launches often take 4–7 hours, so it may run longer.",
+      "sourceUrl": "https://status.epicgames.com/"
+    },
+    {
+      "id": "eos-maintenance-2026-11-10",
+      "name": "Epic Online Services maintenance (Sessions & Lobbies)",
+      "version": null,
+      "kind": "service-maintenance",
+      "downtimeStartsAt": "2026-11-10T08:00:00+02:00",
+      "expectedEndAt": "2026-11-10T09:30:00+02:00",
+      "confidence": "official",
+      "notes": "Back-end maintenance window of up to 90 minutes. Parties, lobbies and matchmaking may be affected.",
+      "sourceUrl": "https://status.epicgames.com/"
+    },
+    {
+      "id": "v42-00-override",
+      "name": "Chapter 7 Season 4 \"Override\"",
+      "version": "42.00",
+      "kind": "season-launch",
+      "downtimeStartsAt": "2026-08-20T08:00:00+02:00",
+      "expectedEndAt": "2026-08-20T13:00:00+02:00",
+      "actualEndAt": "2026-08-20T13:00:00+02:00",
+      "confidence": "reported",
+      "notes": "Start time confirmed by @FortniteStatus; return time as reported by press coverage.",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-server-status-downtime"
+    },
+    {
+      "id": "v41-00-chapter-7-season-3",
+      "name": "Chapter 7 Season 3",
+      "version": "41.00",
+      "kind": "season-launch",
+      "downtimeStartsAt": "2026-06-06T01:30:00+02:00",
+      "expectedEndAt": "2026-06-06T08:26:00+02:00",
+      "actualEndAt": "2026-06-06T08:26:00+02:00",
+      "confidence": "official",
+      "notes": "Roughly 7 hours of downtime, per Epic's status page.",
+      "sourceUrl": "https://status.epicgames.com/"
+    }
+  ]
+}
