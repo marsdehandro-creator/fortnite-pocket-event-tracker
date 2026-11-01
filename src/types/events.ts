@@ -4,6 +4,8 @@
  * Statuses are never stored — they are derived from the timestamps and the current time (see utils/status.ts).
  */
 
+import type { MapChange, MapDiscovery, POIRanking, Season } from "./intel";
+
 export type IsoDateString = string;
 
 /** How much the timing can be trusted. Shown on every card. */
@@ -96,6 +98,10 @@ export interface CompetitiveEvent {
 export interface TrackerData {
   updates: UpdateEvent[];
   events: CompetitiveEvent[];
+  seasons: Season[];
+  discoveries: MapDiscovery[];
+  pois: POIRanking[];
+  mapChanges: MapChange[];
   /** Where this data came from — the bundled JSON or a live API. */
   source: "static" | "api";
   /** When the underlying dataset was last curated or fetched. */

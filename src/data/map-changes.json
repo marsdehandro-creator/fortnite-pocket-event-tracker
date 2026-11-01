@@ -1,0 +1,66 @@
+{
+  "updatedAt": "2026-11-01T12:45:00+02:00",
+  "items": [
+    {
+      "id": "lil-uzis-stronghold-2026-11-07",
+      "date": "2026-11-07T00:00:00+02:00",
+      "seasonId": "c7-treasure-hunters",
+      "type": "reworked",
+      "title": "Lil' Uzi's Stronghold changes",
+      "description": "Epic has flagged a change to the fort for 7 November. What changes (and the exact time) isn't announced yet.",
+      "poiId": "lil-uzis-stronghold",
+      "confidence": "reported",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+    },
+    {
+      "id": "megalodon-buggy-2026-11-07",
+      "date": "2026-11-07T00:00:00+02:00",
+      "seasonId": "c7-treasure-hunters",
+      "type": "map-update",
+      "title": "The Megalodon and Buggy arrive",
+      "description": "Both are listed for 7 November. Where they'll appear on the map isn't published yet.",
+      "confidence": "reported",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+    },
+    {
+      "id": "crossbones-isle-launch",
+      "date": "2026-11-01T10:12:00+02:00",
+      "seasonId": "c7-treasure-hunters",
+      "type": "map-update",
+      "title": "Crossbones Isle replaces the Override island",
+      "description": "A new skull-and-crossbones map, smaller and with more water. Lobbies drop from 100 to 80 players, and you jump from the Going Merry instead of the Battle Bus.",
+      "confidence": "official",
+      "sourceUrl": "https://beebom.com/fortnite-treasure-hunters-mini-season-map-changes-pois/"
+    },
+    {
+      "id": "twelve-new-named-locations",
+      "date": "2026-11-01T10:12:00+02:00",
+      "seasonId": "c7-treasure-hunters",
+      "type": "added",
+      "title": "12 new named locations",
+      "description": "Rubber Resort, The Chest, Loot Lagoon, Lil' Uzi's Stronghold, Lantern Landing, Arlong Park, Cursed Cavern, The $.$. Rocky, Windmill Village, Loguetown, Plunder Port and Busy Bay.",
+      "confidence": "official",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+    },
+    {
+      "id": "override-locations-removed",
+      "date": "2026-11-01T10:12:00+02:00",
+      "seasonId": "c7-treasure-hunters",
+      "type": "removed",
+      "title": "10 Override locations removed",
+      "description": "Lifty Lodge, Nightmare Neighbourhood, Freaky Fields, Wonkeeland, Golden Grove, Shaken Sanctuary, Cluster Coast, Sunken Shores, Heatwave Harbor and Chopped Shop are gone with the old island.",
+      "confidence": "official",
+      "sourceUrl": "https://beebom.com/fortnite-treasure-hunters-mini-season-map-changes-pois/"
+    },
+    {
+      "id": "vending-machines-removed",
+      "date": "2026-11-01T10:12:00+02:00",
+      "seasonId": "c7-treasure-hunters",
+      "type": "reworked",
+      "title": "Vending Machines out, Gold Bars vaulted",
+      "description": "Chests and floor loot replace Vending Machines across the island, and Gold Bars are vaulted — no buying your loadout this season.",
+      "confidence": "official",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+    }
+  ]
+}

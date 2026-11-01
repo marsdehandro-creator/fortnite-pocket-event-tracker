@@ -1,21 +1,46 @@
 import { describe, expect, it } from "vitest";
 import { isCompetitiveEvent, isUpdateEvent, sanitizeList } from "../utils/validate";
+import { findBrokenReferences, isMapChange, isMapDiscovery, isPOIRanking, isSeason } from "../utils/validateIntel";
+import { getStaticData } from "./dataSource";
 import updatesFile from "./updates.json";
 import eventsFile from "./events.json";
+import seasonsFile from "./seasons.json";
+import discoveriesFile from "./discoveries.json";
+import poisFile from "./pois.json";
+import mapChangesFile from "./map-changes.json";
 
 /** Guards the hand-curated JSON: a typo here would silently drop a card on the live site. */
 describe("bundled data", () => {
-  it("every update record is valid", () => {
-    updatesFile.items.forEach((item) => expect(isUpdateEvent(item), item.id).toBe(true));
+  const files = [
+    ["update", updatesFile.items, isUpdateEvent],
+    ["competitive event", eventsFile.items, isCompetitiveEvent],
+    ["season", seasonsFile.items, isSeason],
+    ["discovery", discoveriesFile.items, isMapDiscovery],
+    ["POI", poisFile.items, isPOIRanking],
+    ["map change", mapChangesFile.items, isMapChange],
+  ] as const;
+
+  it.each(files)("every %s record is valid", (_label, items, guard) => {
+    (items as readonly { id: string }[]).forEach((item) => expect((guard as (v: unknown) => boolean)(item), item.id).toBe(true));
   });
 
-  it("every competitive event record is valid", () => {
-    eventsFile.items.forEach((item) => expect(isCompetitiveEvent(item), item.id).toBe(true));
-  });
-
-  it("ids are unique", () => {
-    const ids = [...updatesFile.items, ...eventsFile.items].map((i) => i.id);
+  it.each(files)("%s ids are unique within their file", (_label, items) => {
+    const ids = (items as readonly { id: string }[]).map((i) => i.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("every seasonId and poiId points at a real record", () => {
+    expect(findBrokenReferences(getStaticData())).toEqual([]);
+  });
+
+  it("nothing is lost between the files and what the app loads", () => {
+    const data = getStaticData();
+    expect(data.updates).toHaveLength(updatesFile.items.length);
+    expect(data.events).toHaveLength(eventsFile.items.length);
+    expect(data.seasons).toHaveLength(seasonsFile.items.length);
+    expect(data.discoveries).toHaveLength(discoveriesFile.items.length);
+    expect(data.pois).toHaveLength(poisFile.items.length);
+    expect(data.mapChanges).toHaveLength(mapChangesFile.items.length);
   });
 });
 

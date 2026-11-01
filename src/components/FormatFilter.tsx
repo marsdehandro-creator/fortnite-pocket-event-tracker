@@ -1,5 +1,6 @@
 import type { TeamFormat } from "../types/events";
 import { FORMAT_LABEL, FORMATS } from "../utils/labels";
+import { ChipFilter } from "./ChipFilter";
 
 export type FormatFilterValue = TeamFormat | "all";
 
@@ -13,20 +14,14 @@ const OPTIONS: FormatFilterValue[] = ["all", ...FORMATS];
 
 export function FormatFilter({ value, onChange, counts }: FormatFilterProps) {
   return (
-    <div className="segmented" role="group" aria-label="Filter events by team format">
-      {OPTIONS.map((option) => (
-        <button
-          key={option}
-          type="button"
-          className="segmented__option"
-          aria-pressed={value === option}
-          onClick={() => onChange(option)}
-        >
-          {option === "all" ? "All" : FORMAT_LABEL[option]}
-          <span className="segmented__count">{counts[option]}</span>
-        </button>
-      ))}
-    </div>
+    <ChipFilter
+      options={OPTIONS}
+      value={value}
+      onChange={onChange}
+      counts={counts}
+      label={(o) => (o === "all" ? "All" : FORMAT_LABEL[o])}
+      ariaLabel="Filter events by team format"
+    />
   );
 }
 

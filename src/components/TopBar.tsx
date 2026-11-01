@@ -23,6 +23,8 @@ export function TopBar({ now, tone }: { now: number; tone: StatusTone }) {
         <nav className="topbar__nav" aria-label="Sections">
           <a href="#updates">Updates</a>
           <a href="#events">Events</a>
+          <a href="#landing">Landing</a>
+          <a href="#discoveries">Secrets</a>
         </nav>
         <span className="topbar__clock" aria-hidden="true">
           <span className={`dot dot--${tone}`} />

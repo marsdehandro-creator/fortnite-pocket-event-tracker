@@ -1,6 +1,8 @@
+import { DiscoveriesPanel } from "./components/DiscoveriesPanel";
 import { EventsTracker } from "./components/EventsTracker";
 import { Footer } from "./components/Footer";
 import { Hero } from "./components/Hero";
+import { LandingSpots } from "./components/LandingSpots";
 import { StructuredData } from "./components/StructuredData";
 import { TopBar } from "./components/TopBar";
 import { UpdateTracker } from "./components/UpdateTracker";
@@ -20,9 +22,15 @@ export function App() {
       </a>
       <TopBar now={now} tone={schedule.tone} />
       <main id="main" className="page">
-        <Hero now={now} updates={data.updates} events={data.events} />
-        <UpdateTracker updates={data.updates} now={now} />
-        <EventsTracker events={data.events} now={now} />
+        <Hero now={now} data={data} />
+        <div className="layout">
+          <div className="layout__main">
+            <UpdateTracker updates={data.updates} now={now} />
+            <EventsTracker events={data.events} now={now} />
+            <LandingSpots pois={data.pois} mapChanges={data.mapChanges} seasons={data.seasons} now={now} />
+          </div>
+          <DiscoveriesPanel discoveries={data.discoveries} seasons={data.seasons} now={now} />
+        </div>
       </main>
       <Footer data={data} />
       <StructuredData events={data.events} now={now} />

@@ -1,17 +1,21 @@
-import type { CompetitiveEvent, UpdateEvent } from "../types/events";
+import type { TrackerData } from "../types/events";
 import { formatDuration, getCountdown } from "../utils/countdown";
-import { getScheduleStatus, getUpdateEnd } from "../utils/status";
+import { getLiveUpdateId, getScheduleStatus, getUpdateEnd } from "../utils/status";
 import { formatSASTLongDate, formatSASTTime, formatSASTWhen, SAST_LABEL } from "../utils/time";
 import { NextEventCard } from "./NextEventCard";
+import { SeasonPanel } from "./SeasonPanel";
 import { StatusPill } from "./StatusPill";
 
 interface HeroProps {
   now: number;
-  updates: UpdateEvent[];
-  events: CompetitiveEvent[];
+  data: TrackerData;
 }
 
-export function Hero({ now, updates, events }: HeroProps) {
+/** How long after servers return the hero keeps saying "back since …". */
+const JUST_BACK_MS = 24 * 3_600_000;
+
+export function Hero({ now, data }: HeroProps) {
+  const { updates, events } = data;
   const schedule = getScheduleStatus(updates, now);
 
   let detail: string;
@@ -22,7 +26,12 @@ export function Hero({ now, updates, events }: HeroProps) {
     const start = schedule.update.downtimeStartsAt;
     detail = `${schedule.update.version ? `v${schedule.update.version}` : schedule.update.name} downtime starts ${formatSASTWhen(start, now)} (in ${formatDuration(getCountdown(start, now).totalMs)}).`;
   } else {
-    detail = "No downtime announced for the next 48 hours.";
+    const live = updates.find((u) => u.id === getLiveUpdateId(updates, now));
+    const end = live && getUpdateEnd(live);
+    detail =
+      live && end && now - end.getTime() < JUST_BACK_MS
+        ? `${live.version ? `v${live.version}` : live.name} is live — servers back since ${formatSASTWhen(end, now)}. No further downtime announced for 48 hours.`
+        : "No downtime announced for the next 48 hours.";
   }
 
   return (
@@ -56,6 +65,8 @@ export function Hero({ now, updates, events }: HeroProps) {
         </article>
 
         <NextEventCard now={now} updates={updates} events={events} />
+
+        <SeasonPanel now={now} seasons={data.seasons} pois={data.pois} discoveries={data.discoveries} />
       </div>
     </section>
   );

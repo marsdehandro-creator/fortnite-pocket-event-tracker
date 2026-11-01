@@ -13,9 +13,9 @@ import type {
  * crashing the page, so one bad entry can't take the tracker down.
  */
 
-const CONFIDENCE: readonly Confidence[] = ["official", "reported", "estimated"];
+export const CONFIDENCE: readonly Confidence[] = ["official", "reported", "estimated"];
 const UPDATE_KINDS: readonly UpdateKind[] = ["season-launch", "patch", "hotfix", "service-maintenance"];
-const FORMATS: readonly TeamFormat[] = ["solo", "duos", "trios", "squads"];
+export const FORMATS: readonly TeamFormat[] = ["solo", "duos", "trios", "squads"];
 const EVENT_TYPES: readonly CompetitiveEventType[] = [
   "cash-cup",
   "victory-cup",
@@ -26,17 +26,17 @@ const EVENT_TYPES: readonly CompetitiveEventType[] = [
 ];
 const REGIONS: readonly Region[] = ["EU", "ME", "NAC", "NAW", "BR", "ASIA", "OCE"];
 
-type Rec = Record<string, unknown>;
+export type Rec = Record<string, unknown>;
 
-const isRecord = (v: unknown): v is Rec => typeof v === "object" && v !== null && !Array.isArray(v);
-const isString = (v: unknown): v is string => typeof v === "string" && v.length > 0;
-const isOptString = (v: unknown) => v === undefined || isString(v);
-const isOneOf = <T extends string>(list: readonly T[], v: unknown): v is T =>
+export const isRecord = (v: unknown): v is Rec => typeof v === "object" && v !== null && !Array.isArray(v);
+export const isString = (v: unknown): v is string => typeof v === "string" && v.length > 0;
+export const isOptString = (v: unknown) => v === undefined || isString(v);
+export const isOneOf = <T extends string>(list: readonly T[], v: unknown): v is T =>
   typeof v === "string" && (list as readonly string[]).includes(v);
 /** Must be parseable and carry an explicit offset, so it can't be misread as the viewer's local time. */
-const isIsoWithOffset = (v: unknown): v is string =>
+export const isIsoWithOffset = (v: unknown): v is string =>
   isString(v) && /([+-]\d{2}:\d{2}|Z)$/.test(v) && !Number.isNaN(Date.parse(v));
-const isOptIso = (v: unknown) => v === undefined || isIsoWithOffset(v);
+export const isOptIso = (v: unknown) => v === undefined || isIsoWithOffset(v);
 
 export function isUpdateEvent(v: unknown): v is UpdateEvent {
   if (!isRecord(v)) return false;

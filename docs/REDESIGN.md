@@ -152,6 +152,23 @@ The second example is **illustrative only**, to show the shape. It is not in the
 
 ## 11. Keeping the data fresh
 
-A Claude Code scheduled task, **`weekly-pocket-tracker-data-refresh`** (Mondays 09:00 SAST), researches Epic's announced downtime and the competitive schedule. It updates `src/data/updates.json` / `events.json` under the rules in the README, runs `npm test` and `npm run build`, and commits/pushes only if both pass. Every run ends with a report of what changed and what it couldn't confirm.
+A Claude Code scheduled task, **`weekly-pocket-tracker-data-refresh`** (Mondays 09:00 SAST), researches downtime, cups, map changes, secrets and POI evidence. It updates all six files in `src/data/`, re-scores affected POIs, archives obsolete discoveries under the rules in the README, runs `npm test` and `npm run build`, and commits/pushes only if both pass. Every run ends with a report of what changed and what it couldn't confirm.
 
 Manual edits are always fine between runs. The task merges with what's there and never deletes records that are still upcoming.
+
+## 12. Map intelligence (added 1 Nov 2026)
+
+Two features turn the tracker into a full operations center:
+
+- **Best Landing Spots.** Every named POI on the current island is scored 0–10 for loot, mobility, materials, contest rate and competitive value. The overall score and rank are computed (`utils/poi.ts`) so every POI is judged on one scale. Filters: Solos/Duos/Trios/Squads/Competitive/Casual. Sorts: overall, best loot, most chests, lowest contest rate, best rotation (mobility), best competitive. POIs without evidence show "Awaiting rating"; early estimates show "Provisional" with their rationale. A map-changes feed (added/removed/buffed/nerfed/reworked/scheduled) sits on top, and a change linked to a POI badges that POI's card.
+- **Map Discoveries.** A sticky right-hand panel on desktop (1200px+) and its own section on mobile. It shows a "N Discoveries Logged" counter, search across title/summary/details/area, category filter, a featured card, a rarity indicator, a 7-day "New" badge, loot rating pips, and expand/collapse details. Obsolete finds are archived, never deleted, behind a "Show archived" toggle.
+- **Season intel** in the hero shows island, season day, lobby size, POI and discovery counts, and season end.
+
+Data contracts are in `src/types/intel.ts`, with four new JSON files (`seasons`, `discoveries`, `pois`, `map-changes`). Runtime validation and cross-file reference checks are in `utils/validateIntel.ts`, enforced by `npm test`.
+
+**Launch-day data (1 Nov 2026, Crossbones Isle):**
+- **POIs:** all 12 official POIs are listed. The 5 with descriptive coverage have Provisional scores; the other 7 await data.
+- **Discoveries:** 8 sourced discoveries, including the A$AP Rocky boss, Captain X's mega chest, buried-treasure maps and launch cannons.
+- **Map changes:** 6, including two scheduled for 7 Nov.
+
+No chest counts existed yet, so none were invented. The weekly task replaces Provisional scores as real evidence appears.

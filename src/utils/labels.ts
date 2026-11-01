@@ -7,6 +7,7 @@ import type {
   UpdateKind,
   UpdateStatus,
 } from "../types/events";
+import type { DiscoveryCategory, DiscoveryRarity, MapChangeType, PlayStyle } from "../types/intel";
 
 export const UPDATE_STATUS_LABEL: Record<UpdateStatus, string> = {
   upcoming: "Upcoming",
@@ -69,4 +70,43 @@ export const CONFIDENCE_HINT: Record<Confidence, string> = {
   official: "Announced by Epic Games",
   reported: "Reported by trusted sources, not yet confirmed by Epic",
   estimated: "Estimated from typical timings — may change",
+};
+
+// ---------------------------------------------------------------------------
+// Map intel
+// ---------------------------------------------------------------------------
+
+
+export const DISCOVERY_CATEGORY_LABEL: Record<DiscoveryCategory, string> = {
+  "secret-location": "Secret Location",
+  "loot-route": "Loot Route",
+  "easter-egg": "Easter Egg",
+  "rotation-route": "Rotation Route",
+  "hidden-chest-area": "Hidden Chest Area",
+  "npc-spawn": "NPC Spawn",
+  "vehicle-spawn": "Vehicle Spawn",
+  "competitive-advantage": "Competitive Advantage",
+};
+
+export const DISCOVERY_RARITY_LABEL: Record<DiscoveryRarity, string> = {
+  common: "Common",
+  rare: "Rare",
+  epic: "Epic",
+  legendary: "Legendary",
+};
+
+export const PLAY_STYLE_LABEL: Record<PlayStyle, string> = {
+  casual: "Casual",
+  arena: "Arena",
+  ranked: "Ranked",
+  tournament: "Tournament",
+};
+
+export const MAP_CHANGE_LABEL: Record<MapChangeType, string> = {
+  added: "New",
+  removed: "Removed",
+  buffed: "Buffed",
+  nerfed: "Nerfed",
+  reworked: "Reworked",
+  "map-update": "Map update",
 };
