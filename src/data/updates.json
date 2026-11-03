@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-01T12:45:00+02:00",
+  "updatedAt": "2026-11-03T17:45:00+02:00",
   "items": [
     {
       "id": "v43-00-treasure-hunters",
@@ -11,8 +11,8 @@
       "expectedEndAt": "2026-11-01T10:00:00+02:00",
       "actualEndAt": "2026-11-01T10:12:00+02:00",
       "confidence": "official",
-      "notes": "Ended Chapter 7 Season 4 \"Override\" and launched the Treasure Hunters mini-season on the new Crossbones Isle map, plus a new Ranked season. Servers returned at 10:12 SAST, 12 minutes past Epic's 07:00–10:00 window.",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "notes": "Ended Chapter 7 Season 4 \"Override\" and launched the Treasure Hunters mini-season on the new Crossbones Isle map, plus a new Ranked season. Epic scheduled downtime for 1 AM ET (05:00 UTC); its status page marked it complete at 08:12 UTC (10:12 SAST).",
+      "sourceUrl": "https://status.epicgames.com/"
     },
     {
       "id": "eos-maintenance-2026-11-10",
@@ -36,18 +36,6 @@
       "confidence": "reported",
       "notes": "Start time confirmed by @FortniteStatus; return time as reported by press coverage.",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-server-status-downtime"
-    },
-    {
-      "id": "v41-00-chapter-7-season-3",
-      "name": "Chapter 7 Season 3",
-      "version": "41.00",
-      "kind": "season-launch",
-      "downtimeStartsAt": "2026-06-06T01:30:00+02:00",
-      "expectedEndAt": "2026-06-06T08:26:00+02:00",
-      "actualEndAt": "2026-06-06T08:26:00+02:00",
-      "confidence": "official",
-      "notes": "Roughly 7 hours of downtime, per Epic's status page.",
-      "sourceUrl": "https://status.epicgames.com/"
     }
   ]
 }

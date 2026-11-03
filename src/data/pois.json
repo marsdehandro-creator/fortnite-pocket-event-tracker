@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-01T12:45:00+02:00",
+  "updatedAt": "2026-11-03T17:45:00+02:00",
   "items": [
     {
       "id": "ss-rocky",
@@ -12,9 +12,9 @@
       "rationale": "Boss drop plus a Choppa make it the strongest loot and fastest exit on the map, but it will be the hottest drop of launch week — risky in tournaments. A metal ship deck won't give many materials.",
       "recommendedTeamSizes": ["duos", "trios", "squads"],
       "bestFor": ["casual"],
-      "highlights": ["Boss: A$AP Rocky (Shock Rocket)", "Choppa", "Mounted cannons"],
+      "highlights": ["Boss: A$AP Rocky (Shock Rocket)", "Supply Specialist: Charlotte-Sensei", "Choppa", "Vault in the cliff"],
       "confidence": "estimated",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -24,13 +24,15 @@
       "mapArea": "South of centre",
       "description": "A dense town on the northern shore of the southern bay, with roads running out in several directions.",
       "status": "active",
-      "scores": { "loot": 7, "mobility": 7, "materials": 8, "contestRate": 8, "competitive": 7 },
-      "rationale": "Dense buildings mean lots to loot and farm, and the central position with roads out makes rotating easy. Early guides tip it for fights, so expect company.",
+      "scores": { "loot": 8, "mobility": 8, "materials": 8, "contestRate": 8, "competitive": 7 },
+      "rationale": "One chest guide counts 41 chest spawns, and a vault sits in the aqueduct sewers. Luffy and Usopp both give free Rifts, so you can launch toward the next zone straight off the drop. It's central and busy: post-launch guides agree it gets crowded.",
+      "chestCount": 41,
       "recommendedTeamSizes": ["solo", "duos", "trios"],
       "bestFor": ["ranked", "arena"],
-      "confidence": "estimated",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "highlights": ["~41 chests", "Free Rifts: Luffy, Usopp", "Vault in the sewers"],
+      "confidence": "reported",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
+      "sourceUrl": "https://techwiser.com/best-landing-spots-fortnite-treasure-hunters/"
     },
     {
       "id": "lantern-landing",
@@ -39,13 +41,15 @@
       "mapArea": "West of centre",
       "description": "A lantern-lit maze of streets just north of the unexplained purple ring, close to the middle of the island.",
       "status": "active",
-      "scores": { "loot": 6, "mobility": 7, "materials": 7, "contestRate": 7, "competitive": 7 },
-      "rationale": "Near the middle with roads out, so rotations are short; tight streets give cover and materials for close fights. Tipped for early action alongside Loguetown.",
+      "scores": { "loot": 8, "mobility": 7, "materials": 7, "contestRate": 8, "competitive": 7 },
+      "rationale": "The highest chest count in post-launch guides (46 to 50+ spawns), plus a vault on the east side and the Frog Statue puzzle just south, which spawns two Rare Chests. Every chest guide puts it first or second, so expect a crowd. Rotations stay short from near the middle.",
+      "chestCount": 46,
       "recommendedTeamSizes": ["duos", "trios", "squads"],
       "bestFor": ["ranked", "casual"],
-      "confidence": "estimated",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "highlights": ["46+ chests", "Frog Statue puzzle nearby", "Vault on the east side"],
+      "confidence": "reported",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
+      "sourceUrl": "https://gamerant.com/fortnite-treasure-hunters-best-landing-spots-chests-sprites/"
     },
     {
       "id": "arlong-park",
@@ -54,27 +58,30 @@
       "mapArea": "West coast island",
       "description": "One Piece's fish-man stronghold: a walled compound with a tiered tower, linked to the mainland by a single bridge.",
       "status": "active",
-      "scores": { "loot": 8, "mobility": 4, "materials": 6, "contestRate": 6, "competitive": 5 },
-      "rationale": "A big walled compound should be loot-heavy, but the only way off the island is one bridge — easy to get trapped when the zone pulls inland. Better for casual squads than tournaments.",
+      "scores": { "loot": 8, "mobility": 5, "materials": 6, "contestRate": 5, "competitive": 6 },
+      "rationale": "Guides count 39 to 40+ chest spawns packed into a small compound. Zoro's free Rift is a second way out besides the single bridge, so getting trapped is less of a risk. It sits on the western edge, and guides call it a quieter start.",
+      "chestCount": 39,
       "recommendedTeamSizes": ["trios", "squads"],
-      "bestFor": ["casual"],
-      "confidence": "estimated",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "bestFor": ["casual", "ranked"],
+      "highlights": ["~39 chests", "Free Rift: Zoro"],
+      "confidence": "reported",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
+      "sourceUrl": "https://gamerant.com/fortnite-treasure-hunters-best-landing-spots-chests-sprites/"
     },
     {
       "id": "rubber-resort",
       "name": "Rubber Resort",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "Far north-west",
-      "description": "A resort on its own island with a duck-shaped yacht, joined by a bridge toward the northern desert.",
+      "description": "A resort on its own island with a duck-shaped yacht, joined by a bridge toward the northern desert. Cap'n Hatsune Miku and Kasane Teto arrive here on 14 November.",
       "status": "active",
       "scores": { "loot": 5, "mobility": 4, "materials": 6, "contestRate": 2, "competitive": 6 },
       "rationale": "The quietest start on the map — isolated in a corner — which suits a safe ranked or tournament drop. The trade-off is a long rotation over a single bridge.",
       "recommendedTeamSizes": ["solo", "duos"],
       "bestFor": ["ranked", "tournament"],
+      "highlights": ["Vault on the west beach", "Changes on 14 Nov"],
       "confidence": "estimated",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -82,12 +89,13 @@
       "name": "The Chest",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "West of the northern desert",
-      "description": "A cluster of islets west of the northern desert. Epic hasn't described it yet — the name hints at loot.",
+      "description": "A cluster of islets west of the northern desert. GameRant counts 20+ spawns here, mostly buried Treasure Chests.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
+      "highlights": ["20+ buried Treasure Chests"],
       "confidence": "official",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -108,13 +116,13 @@
       "name": "Lil' Uzi's Stronghold",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "North-east, desert edge",
-      "description": "Lil Uzi Vert's fort at the edge of the desert, beside a large green island. It changes on 7 November.",
+      "description": "Lil Uzi Vert's fort at the edge of the desert, beside a large green island. On 7 November Lil Uzi arrives here as a boss with Cuddle Team Leader.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
-      "highlights": ["Changes on 7 Nov"],
+      "highlights": ["Boss arrives 7 Nov"],
       "confidence": "official",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -122,12 +130,14 @@
       "name": "Cursed Cavern",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "Centre-east",
-      "description": "A dark crater in the green zone, centre-east.",
+      "description": "A dark crater in the green zone, centre-east, built into a hill. Guides count 25 to 28 chest spawns and call it a relatively safe drop.",
       "status": "active",
+      "chestCount": 25,
       "recommendedTeamSizes": [],
       "bestFor": [],
+      "highlights": ["25+ chests", "Vault on the west side"],
       "confidence": "official",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -135,12 +145,13 @@
       "name": "Windmill Village",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "South-west island",
-      "description": "Luffy's home town from One Piece, on an island linked to the mainland.",
+      "description": "Luffy's home town from One Piece, on an island linked to the mainland. Buccaneer Brigand Jones offers a free Heavy Specialist, and Nami gives a free Rift on the beach to the south.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
+      "highlights": ["Heavy Specialist: Buccaneer Brigand Jones", "Free Rift: Nami", "Vault to the north-east"],
       "confidence": "official",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -148,12 +159,14 @@
       "name": "Plunder Port",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "South coast",
-      "description": "Docks on the south coast with two ships moored offshore.",
+      "description": "Docks on the south coast with two multi-floor ships moored offshore. GameRant counts 30+ chest spawns, most of them on the south side.",
       "status": "active",
+      "chestCount": 30,
       "recommendedTeamSizes": [],
       "bestFor": [],
+      "highlights": ["30+ chests", "Vault underneath"],
       "confidence": "official",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -161,12 +174,13 @@
       "name": "Busy Bay",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "South-east corner",
-      "description": "Two connected islands in the south-east corner.",
+      "description": "Two connected islands in the south-east corner. Sanji gives a free Rift here.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
+      "highlights": ["Free Rift: Sanji", "Vault in the southern cliffs"],
       "confidence": "official",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
+      "updatedAt": "2026-11-03T17:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     }
   ]

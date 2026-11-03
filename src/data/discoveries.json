@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-01T12:45:00+02:00",
+  "updatedAt": "2026-11-03T17:45:00+02:00",
   "items": [
     {
       "id": "asap-rocky-boss",
@@ -13,7 +13,6 @@
       "lootRating": 5,
       "seasonId": "c7-treasure-hunters",
       "addedAt": "2026-11-01T12:45:00+02:00",
-      "featured": true,
       "status": "active",
       "confidence": "official",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
@@ -22,7 +21,7 @@
       "id": "captain-x-mega-chest",
       "title": "Captain X's mega chest",
       "summary": "Epic teases a mega chest hidden somewhere on Crossbones Isle. Its location and contents are still secret.",
-      "details": "The islets named The Chest, west of the northern desert, are the obvious suspect, but nothing confirms the mega chest is there yet. This card will be updated once it's found.",
+      "details": "The islets named The Chest, west of the northern desert, are the obvious suspect, but so far guides only report buried Treasure Chests there. Nothing confirms that the Map Fragments open it either. This card will be updated once it's found.",
       "mapArea": "Unconfirmed — possibly The Chest",
       "category": "hidden-chest-area",
       "rarity": "legendary",
@@ -64,16 +63,18 @@
     {
       "id": "map-fragments",
       "title": "Map Fragments: \"one piece of something bigger\"",
-      "summary": "Epic hints that Map Fragments feed a larger secret. Collect them and watch this space.",
-      "details": "No details yet on how many fragments exist or what they unlock. Likely a season-long secret quest trigger.",
-      "mapArea": "Island-wide",
+      "summary": "Map Fragments are a weekly collectible: one unlocks each week, and the first is a floor pickup below deck on The $.$. Rocky worth 10,000 XP.",
+      "details": "Week 1: go to the far southern (pointed) end of the battleship and drop to the lowest floor. The fragment sits by a crate, marked with a white diamond icon; break the floor if you can't find the stairs. Guides disagree on the total (six or seven pieces), and nothing confirms the full set opens Captain X's mega chest.",
+      "mapArea": "Week 1: The $.$. Rocky, lower deck",
+      "poiId": "ss-rocky",
       "category": "easter-egg",
       "rarity": "epic",
+      "lootRating": 2,
       "seasonId": "c7-treasure-hunters",
       "addedAt": "2026-11-01T12:45:00+02:00",
       "status": "active",
-      "confidence": "official",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "confidence": "reported",
+      "sourceUrl": "https://www.destructoid.com/how-to-collect-map-fragment-at-the-ss-rocky-in-fortnite-treasure-hunters/"
     },
     {
       "id": "choppa-ss-rocky",
@@ -106,7 +107,7 @@
       "id": "purple-ring",
       "title": "Unexplained purple ring",
       "summary": "The official map shows a purple ring just south of Lantern Landing that Epic hasn't explained.",
-      "details": "Spotted on Epic's map art; nothing in the patch notes accounts for it. Worth a look on your next drop nearby.",
+      "details": "Spotted on Epic's map art; nothing in the patch notes accounts for it. Puzzle guides place the Giant's Battlefield landmark (home of the Frog Statue puzzle) in the same spot south of Lantern Landing, so it is probably the same place, but no source links the two directly.",
       "mapArea": "Centre-west, south of Lantern Landing",
       "category": "secret-location",
       "rarity": "rare",
@@ -115,6 +116,96 @@
       "status": "active",
       "confidence": "reported",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+    },
+    {
+      "id": "frog-statue-puzzle",
+      "title": "Frog Statue puzzle at Giant's Battlefield",
+      "summary": "Turn three giant frog statues to face the central structure and two Rare Chests spawn in the middle.",
+      "details": "At the Giant's Battlefield landmark south of Lantern Landing, interact with the frog statue on the edge until it faces the central structure, then repeat with the other two; Lily Pads get you between them quickly. The chests can hold high-tier weapons and a Pirate Shop Token. A squad can split up and solve it faster.",
+      "mapArea": "Giant's Battlefield, south of Lantern Landing",
+      "poiId": "lantern-landing",
+      "category": "secret-location",
+      "rarity": "epic",
+      "lootRating": 4,
+      "seasonId": "c7-treasure-hunters",
+      "addedAt": "2026-11-03T17:45:00+02:00",
+      "featured": true,
+      "status": "active",
+      "confidence": "reported",
+      "sourceUrl": "https://beebom.com/fortnite-treasure-hunters-puzzle-guide/"
+    },
+    {
+      "id": "waterfall-loot-room",
+      "title": "Waterfall loot room by Fortune's Fort",
+      "summary": "A hidden cave behind a waterfall east of Fortune's Fort opens a treasure room when you emote at its back wall.",
+      "details": "Walk through the waterfall, pickaxe the first wall, crouch or slide through the gap, then emote at the wall at the end of the cave. The room behind it has a treasure chest, and GameRant reports Sprite Chests and Rare Treasure Chests there too. Fortune's Fort doesn't appear on Epic's map card, so which labelled location it matches is unconfirmed.",
+      "mapArea": "North, behind the waterfall east of Fortune's Fort",
+      "category": "secret-location",
+      "rarity": "rare",
+      "lootRating": 3,
+      "seasonId": "c7-treasure-hunters",
+      "addedAt": "2026-11-03T17:45:00+02:00",
+      "status": "active",
+      "confidence": "reported",
+      "sourceUrl": "https://beebom.com/fortnite-treasure-hunters-puzzle-guide/"
+    },
+    {
+      "id": "vault-keys",
+      "title": "Nine vaults opened by Vault Keys",
+      "summary": "Players have found nine vaults on Crossbones Isle. Vault Keys drop at random from Treasure Chests, and picking one up marks the nearest vault on your map.",
+      "details": "Reported spots: Rubber Resort (west beach), behind the waterfall near Loot Lagoon / Fortune's Fort, east Lantern Landing, west Cursed Cavern, the cliff by The $.$. Rocky, south Busy Bay cliffs, north-east of Windmill Village, Loguetown's aqueduct sewers, and under Plunder Port. You can also take a key from a player you eliminate, and the Chester Sprite may improve your odds of finding one. What vaults hold hasn't been documented yet.",
+      "mapArea": "Island-wide (nine reported locations)",
+      "category": "hidden-chest-area",
+      "rarity": "epic",
+      "seasonId": "c7-treasure-hunters",
+      "addedAt": "2026-11-03T17:45:00+02:00",
+      "status": "active",
+      "confidence": "reported",
+      "sourceUrl": "https://techwiser.com/fortnite-treasure-hunters-vault-locations/"
+    },
+    {
+      "id": "free-specialists",
+      "title": "Three free Specialists to hire",
+      "summary": "With Gold vaulted, hiring is free: a Supply Specialist at The $.$. Rocky, a Heavy at Windmill Village and a Medic at Fortune's Fort.",
+      "details": "Charlotte-Sensei (Supply) stands on land beside A$AP Rocky's battleship, Buccaneer Brigand Jones (Heavy) is in Windmill Village, and Kawaii Team Leader (Medic) is at Fortune's Fort. A Specialist stays with you all match, which helps most in solos.",
+      "mapArea": "The $.$. Rocky, Windmill Village, Fortune's Fort",
+      "category": "npc-spawn",
+      "rarity": "rare",
+      "seasonId": "c7-treasure-hunters",
+      "addedAt": "2026-11-03T17:45:00+02:00",
+      "status": "active",
+      "confidence": "reported",
+      "sourceUrl": "https://gamerant.com/fortnite-treasure-hunters-npc-locations/"
+    },
+    {
+      "id": "straw-hat-rifts",
+      "title": "Straw Hat NPCs give free Rifts",
+      "summary": "Luffy, Usopp, Zoro, Sanji and Nami each give a free Rift: an instant redeploy into the air for rotating or escaping.",
+      "details": "Luffy and Usopp are in Loguetown, Zoro at Arlong Park, Sanji at Busy Bay and Nami on the beach south of Windmill Village. Charlotte-Sensei, Buccaneer Brigand Jones and Kawaii Team Leader also offer Rifts.",
+      "mapArea": "Loguetown, Arlong Park, Busy Bay, south of Windmill Village",
+      "category": "rotation-route",
+      "rarity": "rare",
+      "seasonId": "c7-treasure-hunters",
+      "addedAt": "2026-11-03T17:45:00+02:00",
+      "status": "active",
+      "confidence": "reported",
+      "sourceUrl": "https://gamerant.com/fortnite-treasure-hunters-npc-locations/"
+    },
+    {
+      "id": "the-chest-buried-treasure",
+      "title": "Buried treasure cluster at The Chest",
+      "summary": "GameRant counts 20+ chest spawns at The Chest, most of them buried Treasure Chests: a quiet dig route in the north-west.",
+      "details": "Dig up the buried chests across the islets. The Plunderarrgh Sprite opens buried chests faster.",
+      "mapArea": "The Chest, west of the northern desert",
+      "poiId": "the-chest",
+      "category": "loot-route",
+      "rarity": "common",
+      "lootRating": 3,
+      "seasonId": "c7-treasure-hunters",
+      "addedAt": "2026-11-03T17:45:00+02:00",
+      "status": "active",
+      "confidence": "reported",
+      "sourceUrl": "https://gamerant.com/fortnite-treasure-hunters-best-landing-spots-chests-sprites/"
     }
   ]
 }
