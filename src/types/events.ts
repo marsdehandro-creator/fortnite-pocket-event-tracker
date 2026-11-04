@@ -50,37 +50,44 @@ export interface UpdateEvent {
 
 export type TeamFormat = "solo" | "duos" | "trios" | "squads";
 
-export type CompetitiveEventType =
-  | "cash-cup"
-  | "victory-cup"
-  | "fncs"
-  | "creator-cup"
-  | "ranked-cup"
-  | "tournament";
+/**
+ * Tournament type as a kebab-case slug, taken from Epic's own classification where available
+ * (e.g. Epic "CashCup" → "cash-cup", "PerformanceEvaluation" → "performance-evaluation").
+ * Deliberately open: any new type Epic introduces is accepted and displayed without code changes.
+ * Known slugs only get nicer labels (utils/labels.ts) and filter buckets (utils/tournaments.ts).
+ */
+export type CompetitiveEventType = string;
 
-/** Fortnite matchmaking regions. South African players normally queue on EU or ME. */
-export type Region = "EU" | "ME" | "NAC" | "NAW" | "BR" | "ASIA" | "OCE";
+/**
+ * Matchmaking region code as Epic publishes it ("EU", "ME", "NAE", …). Open for the same reason:
+ * a new region appears automatically. South African players normally queue on EU or ME.
+ */
+export type Region = string;
 
-export type CompetitiveStatus = "upcoming" | "active" | "finished";
+export type CompetitiveStatus = "upcoming" | "active" | "finished" | "cancelled";
 
 export interface EventRequirements {
-  /** e.g. "Platinum I" — omit when not published. */
+  /** e.g. "Diamond I" — omit when not published. */
   minRank?: string;
   minAccountLevel?: number;
   /** Matchmaking regions whose players may enter. */
   regionEligibility: Region[];
   twoFactorRequired?: boolean;
+  /** Any other eligibility rule in plain words, e.g. "Accept the event rules". */
+  other?: string[];
 }
 
 export interface CompetitiveEvent {
+  /** Stable id. For Epic-sourced events this is derived from Epic's event window id, so re-syncs update in place. */
   id: string;
   name: string;
   type: CompetitiveEventType;
   region: Region;
-  /** Game mode, e.g. "Battle Royale · Reload", "Zero Build". */
+  /** Game mode, e.g. "Battle Royale", "Zero Build", "Reload". */
   mode: string;
-  format: TeamFormat;
-  /** Session/round label for multi-session events, e.g. "Qualifier 1". */
+  /** Omitted when the team size isn't known — the event still displays. */
+  format?: TeamFormat;
+  /** Session/round label for multi-session events, e.g. "Session 1 - Round 2". */
   round?: string;
   startsAt: IsoDateString;
   endsAt: IsoDateString;
@@ -89,6 +96,58 @@ export interface CompetitiveEvent {
   prizePool?: string;
   notes?: string;
   sourceUrl?: string;
+
+  // --- Fields filled by automated ingestion (all optional so hand-written records stay valid) ---
+  /** Epic event group (the tournament), e.g. "S43_TriosCashCup". */
+  groupId?: string;
+  /** Epic event window id, e.g. "S43_TriosCashCup_Event1_EU". */
+  sourceId?: string;
+  /** Epic's raw tournament type label, e.g. "CashCup" — kept for transparency. */
+  epicType?: string;
+  /** Epic round type, e.g. "Qualifiers", "Finals", "Open". */
+  roundType?: string;
+  description?: string;
+  rulesUrl?: string;
+  tags?: string[];
+  platforms?: string[];
+  imageUrl?: string;
+  /** True while Epic lists the time as TBD. */
+  timeTbd?: boolean;
+  /** Set when the event was cancelled or removed from Epic's schedule. */
+  cancelled?: boolean;
+  cancelledReason?: string;
+  /** Earlier start times, oldest first, when an event was rescheduled. */
+  previousStartsAt?: IsoDateString[];
+  /** When ingestion first and most recently saw this record. */
+  firstSeenAt?: IsoDateString;
+  lastSeenAt?: IsoDateString;
+}
+
+/** One entry in the tournament sync log (public/data/sync-log.json). */
+export interface SyncRun {
+  startedAt: IsoDateString;
+  finishedAt: IsoDateString;
+  status: "success" | "partial" | "failed";
+  /** Where the events came from, e.g. "epic-schedule (browser)". */
+  source: string;
+  regions: string[];
+  discovered: number;
+  added: number;
+  updated: number;
+  unchanged: number;
+  rescheduled: number;
+  cancelled: number;
+  restored: number;
+  rejected: number;
+  archived: number;
+  errors: string[];
+  warnings: string[];
+}
+
+export interface SyncLog {
+  lastAttemptAt?: IsoDateString;
+  lastSuccessAt?: IsoDateString;
+  runs: SyncRun[];
 }
 
 // ---------------------------------------------------------------------------

@@ -2,7 +2,6 @@ import type { TrackerData, TrackerDataSource } from "../types/events";
 import { isCompetitiveEvent, isUpdateEvent, sanitizeList } from "../utils/validate";
 import { findBrokenReferences, isMapChange, isMapDiscovery, isPOIRanking, isSeason } from "../utils/validateIntel";
 import updatesFile from "./updates.json";
-import eventsFile from "./events.json";
 import seasonsFile from "./seasons.json";
 import discoveriesFile from "./discoveries.json";
 import poisFile from "./pois.json";
@@ -59,7 +58,8 @@ export function getStaticData(): TrackerData {
   staticCache ??= fromEnvelopes(
     {
       updates: updatesFile,
-      events: eventsFile,
+      // Tournaments are not bundled: they live in public/data/ and load at runtime (useTournaments).
+      events: { items: [] },
       seasons: seasonsFile,
       discoveries: discoveriesFile,
       pois: poisFile,

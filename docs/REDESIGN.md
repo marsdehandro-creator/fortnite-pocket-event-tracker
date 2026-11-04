@@ -13,7 +13,7 @@ Written 2026-11-01, when the repository's previous single-file site was rebuilt 
 
 ## 2. Rebrand scope (all done)
 
-Browser title, H1 and metadata · package name (`fortnite-pocket-event-tracker`) · workflow and launch-config names · every code identifier, constant and CSS class (full rewrite) · localStorage prefix (`fortnite-pocket-event-tracker:`) · GitHub repository name and description · GitHub Pages URL · local folder (now `C:\Users\Dehandro\FortnitePocketEventTracker`, outside OneDrive) · scheduled maintenance tasks (the old ones are deleted; one new weekly data-refresh task exists, see §11).
+Browser title, H1 and metadata · package name (`fortnite-pocket-event-tracker`) · workflow and launch-config names · every code identifier, constant and CSS class (full rewrite) · localStorage prefix (`fortnite-pocket-event-tracker:`) · GitHub repository name and description · GitHub Pages URL · local folder (now `C:\Users\Dehandro\FortnitePocketEventTracker`, outside OneDrive) · scheduled maintenance tasks (the old ones are deleted; one data-refresh task exists, now every third day, see §11).
 
 ## 3. Consequences of the rebuild
 
@@ -32,7 +32,10 @@ public/                    favicon.svg, icon-512.png, apple-touch-icon.png, og-i
 src/
   main.tsx, App.tsx
   types/events.ts          all data contracts
-  data/                    updates.json, events.json, dataSource.ts (+ data.test.ts)
+  data/                    updates.json, … dataSource.ts, tournamentsSource.ts (+ data.test.ts)
+  ingest/                  Epic tournament import: epic.ts, merge.ts, syncLog.ts
+public/data/               tournaments.json, tournaments-archive.json, sync-log.json (synced, fetched at runtime)
+scripts/                   sync-tournaments.ts + browser/ extractors
   hooks/                   useNow, useTrackerData, usePersistentState
   utils/                   time, countdown, status, validate, labels (+ tests)
   components/              see §6
@@ -127,7 +130,7 @@ Defined in [`src/types/events.ts`](../src/types/events.ts):
 
 The second example is **illustrative only**, to show the shape. It is not in the live data.
 
-**Seed data status (1 Nov 2026):** the updates are real (v43.00 downtime per Epic's status page, EOS maintenance on 10 Nov, two past season launches). Competitive data is thin. The only public listings found were NAC FNCS Solos Reload qualifier dates (4, 5, 8 and 9 Nov) with an unstated timezone, so those cards are marked **Estimated**. No EU/ME events are listed yet, and none were invented.
+**Seed data status (1 Nov 2026):** the updates are real (v43.00 downtime per Epic's status page, EOS maintenance on 10 Nov, two past season launches). Competitive data is thin. The only public listings found were NAC FNCS Solos Reload qualifier dates (4, 5, 8 and 9 Nov) with an unstated timezone, so those cards are marked **Estimated**. No EU/ME events are listed yet, and none were invented. *(Superseded 4 Nov 2026: tournaments now come from Epic's schedule; see Tournament coverage.)*
 
 ## 9. Implementation plan
 
@@ -152,7 +155,7 @@ The second example is **illustrative only**, to show the shape. It is not in the
 
 ## 11. Keeping the data fresh
 
-A Claude Code scheduled task, **`weekly-pocket-tracker-data-refresh`** (Mondays 09:00 SAST), researches downtime, cups, map changes, secrets and POI evidence. It updates all six files in `src/data/`, re-scores affected POIs, archives obsolete discoveries under the rules in the README, runs `npm test` and `npm run build`, and commits/pushes only if both pass. Every run ends with a report of what changed and what it couldn't confirm.
+A Claude Code scheduled task, **`weekly-pocket-tracker-data-refresh`** (every third day since 4 Nov 2026: triggered daily at 11:00 SAST, gated to 70h since the last success), researches downtime, map changes, secrets and POI evidence. It updates the five files in `src/data/` (tournaments are synced separately), re-scores affected POIs, archives obsolete discoveries under the rules in the README, runs `npm test` and `npm run build`, and commits/pushes only if both pass. Every run ends with a report of what changed and what it couldn't confirm.
 
 Manual edits are always fine between runs. The task merges with what's there and never deletes records that are still upcoming.
 
@@ -171,7 +174,7 @@ Data contracts are in `src/types/intel.ts`, with four new JSON files (`seasons`,
 - **Discoveries:** 8 sourced discoveries, including the A$AP Rocky boss, Captain X's mega chest, buried-treasure maps and launch cannons.
 - **Map changes:** 6, including two scheduled for 7 Nov.
 
-No chest counts existed yet, so none were invented. The weekly task replaces Provisional scores as real evidence appears.
+No chest counts existed yet, so none were invented. The data-refresh task replaces Provisional scores as real evidence appears.
 
 ## 13. Dashboard redesign + background art (1 Nov 2026)
 
@@ -194,3 +197,12 @@ Every earlier capability was kept: filters, sorts, search, provisional/unrated s
 - **Responsive:** desktop at full strength, large tablets at 60%, hidden below 1024px.
 - **Variants:** compared at 10% (A), 15% (B) and 20% (C); **B is the default**. Preview the others with `?art=a` or `?art=c`.
 - **Artwork:** the figures are original stylised SVG with neon rim light, scanline texture and graffiti tags. They don't reproduce any specific character's likeness. Licensed renders can be dropped in via `FIGURE_IMAGES`.
+
+## Tournament coverage (4 Nov 2026)
+
+- **Source:** Epic's own schedule and event pages on fortnite.com/competitive. They are server-rendered and carry structured data (`window.__reactRouterContext`), read in a real browser by `scripts/browser/*.js`. There is no public API, and Epic's events service needs game-client OAuth, so neither is used.
+- **Dynamic types:** `type` is Epic's `tournamentType` slugified (`CashCup` → `cash-cup`), or derived from the name when Epic says `Other`. `CompetitiveEventType` and `Region` are open strings; validators check the shape (kebab slug / region code), not a whitelist. Labels for unknown types are humanised from the slug.
+- **Filter buckets:** `classifyTournament()` maps any type to FNCS / Cash Cups / Skin Cups / Community / Invitational / Other by keyword rules. Unknown types fall into Other; nothing is ever excluded.
+- **Merge:** match by id (from Epic's event-window id), then sourceId, then a fuzzy name+region+SAST-day key for hand-entered legacy rows. Reschedules keep `previousStartsAt`; an upcoming session missing from a successfully covered region is marked `cancelled` (restored if it reappears); sessions ended 45+ days move to the archive file and are never deleted.
+- **Cadence:** a daily scheduled task gated by `--check-due` (72h since the last success, 2h tolerance). Failed or partial runs don't reset the clock, so they retry the next day. Every attempt is logged in `sync-log.json`, and the Events panel shows "Last updated".
+- **Design:** all of this lives inside the existing Events panel (type chips, three compact dropdowns with counts, expandable rows). The 2×2 grid is unchanged.

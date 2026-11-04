@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { StatusTone } from "../utils/status";
 import { EPIC_STATUS_PAGE } from "../utils/liveStatus";
 import { formatSASTTime, SAST_LABEL } from "../utils/time";
-import { ChevronDown, CloseIcon, MenuIcon, SearchIcon } from "./Icons";
+import { BellIcon, ChevronDown, CloseIcon, MenuIcon, SearchIcon } from "./Icons";
 
 const SECTIONS = [
   { id: "updates", label: "Updates" },
@@ -21,6 +21,9 @@ interface TopBarProps {
   tone: StatusTone;
   onSearch: () => void;
   onOpenSeasonIntel: () => void;
+  onOpenAlerts: () => void;
+  /** Alerts are switched on for this device (bell shows as active). */
+  alertsOn: boolean;
 }
 
 /** Highlights the nav link for whichever section is currently in view. */
@@ -42,7 +45,7 @@ function useActiveSection(): string | null {
   return active;
 }
 
-export function TopBar({ now, tone, onSearch, onOpenSeasonIntel }: TopBarProps) {
+export function TopBar({ now, tone, onSearch, onOpenSeasonIntel, onOpenAlerts, alertsOn }: TopBarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -129,6 +132,15 @@ export function TopBar({ now, tone, onSearch, onOpenSeasonIntel }: TopBarProps) 
         <button type="button" className="icon-button" aria-label="Search the tracker" onClick={onSearch}>
           <SearchIcon />
         </button>
+        <button
+          type="button"
+          className={`icon-button alerts-bell${alertsOn ? " is-active" : ""}`}
+          aria-label={alertsOn ? "Alerts are on — alert settings" : "Alert settings"}
+          onClick={onOpenAlerts}
+        >
+          <BellIcon />
+          {alertsOn && <span className="alerts-bell__dot" aria-hidden="true" />}
+        </button>
         <button type="button" className="icon-button" aria-label="Open menu" aria-expanded={menuOpen} aria-controls="site-menu" onClick={() => setMenuOpen(true)}>
           <MenuIcon />
         </button>
@@ -161,6 +173,15 @@ export function TopBar({ now, tone, onSearch, onOpenSeasonIntel }: TopBarProps) 
                 }}
               >
                 Search
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  onOpenAlerts();
+                }}
+              >
+                Alerts
               </button>
             </nav>
             <div className="menu-sheet__external">

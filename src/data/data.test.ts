@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { isCompetitiveEvent, isUpdateEvent, sanitizeList } from "../utils/validate";
+import { isCompetitiveEvent, isSyncLog, isUpdateEvent, sanitizeList } from "../utils/validate";
 import { findBrokenReferences, isMapChange, isMapDiscovery, isPOIRanking, isSeason } from "../utils/validateIntel";
 import { getStaticData } from "./dataSource";
 import updatesFile from "./updates.json";
-import eventsFile from "./events.json";
+import tournamentsFile from "../../public/data/tournaments.json";
+import tournamentArchiveFile from "../../public/data/tournaments-archive.json";
+import syncLogFile from "../../public/data/sync-log.json";
 import seasonsFile from "./seasons.json";
 import discoveriesFile from "./discoveries.json";
 import poisFile from "./pois.json";
@@ -13,7 +15,8 @@ import mapChangesFile from "./map-changes.json";
 describe("bundled data", () => {
   const files = [
     ["update", updatesFile.items, isUpdateEvent],
-    ["competitive event", eventsFile.items, isCompetitiveEvent],
+    ["tournament", tournamentsFile.items, isCompetitiveEvent],
+    ["archived tournament", tournamentArchiveFile.items, isCompetitiveEvent],
     ["season", seasonsFile.items, isSeason],
     ["discovery", discoveriesFile.items, isMapDiscovery],
     ["POI", poisFile.items, isPOIRanking],
@@ -29,6 +32,15 @@ describe("bundled data", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it("tournament ids are unique across current and archive (history never duplicates)", () => {
+    const ids = [...tournamentsFile.items, ...tournamentArchiveFile.items].map((i: { id: string }) => i.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("the sync log is well-formed", () => {
+    expect(isSyncLog(syncLogFile)).toBe(true);
+  });
+
   it("every seasonId and poiId points at a real record", () => {
     expect(findBrokenReferences(getStaticData())).toEqual([]);
   });
@@ -36,7 +48,6 @@ describe("bundled data", () => {
   it("nothing is lost between the files and what the app loads", () => {
     const data = getStaticData();
     expect(data.updates).toHaveLength(updatesFile.items.length);
-    expect(data.events).toHaveLength(eventsFile.items.length);
     expect(data.seasons).toHaveLength(seasonsFile.items.length);
     expect(data.discoveries).toHaveLength(discoveriesFile.items.length);
     expect(data.pois).toHaveLength(poisFile.items.length);

@@ -1,0 +1,45 @@
+{
+  "lastAttemptAt": "2026-11-04T22:15:22+02:00",
+  "lastSuccessAt": "2026-11-04T22:15:22+02:00",
+  "runs": [
+    {
+      "startedAt": "2026-11-04T22:15:22+02:00",
+      "finishedAt": "2026-11-04T22:15:22+02:00",
+      "status": "success",
+      "source": "epic-schedule (browser)",
+      "regions": [
+        "EU",
+        "ME",
+        "NAE",
+        "NAW",
+        "NAC",
+        "BR",
+        "ASIA",
+        "OCE"
+      ],
+      "discovered": 365,
+      "added": 355,
+      "updated": 10,
+      "unchanged": 0,
+      "rescheduled": 0,
+      "cancelled": 0,
+      "restored": 0,
+      "archived": 0,
+      "rejected": 0,
+      "errors": [],
+      "warnings": [
+        "merged 120 duplicate sightings of the same event across region pages",
+        "superseded fncs-solos-reload-eu-q1 with epic-s43-fncssoloreloadqualifiers-qual1round1day1-eu",
+        "superseded fncs-solos-reload-eu-q2 with epic-s43-fncssoloreloadqualifiers-qual1round1day2-eu",
+        "superseded trios-cash-cup-eu-1 with epic-s43-trioscashcup-event1-eu",
+        "superseded fncs-solos-reload-eu-q3 with epic-s43-fncssoloreloadqualifiers-qual1round2-eu",
+        "superseded fncs-solos-reload-eu-q4 with epic-s43-fncssoloreloadqualifiers-qual1round3-eu",
+        "superseded trios-cash-cup-eu-2 with epic-s43-trioscashcup-event2-eu",
+        "superseded fncs-solos-reload-nac-q1 with epic-s43-fncssoloreloadqualifiers-qual1round1day1-nac",
+        "superseded fncs-solos-reload-nac-q2 with epic-s43-fncssoloreloadqualifiers-qual1round1day2-nac",
+        "superseded fncs-solos-reload-nac-q3 with epic-s43-fncssoloreloadqualifiers-qual1round2-nac",
+        "superseded fncs-solos-reload-nac-q4 with epic-s43-fncssoloreloadqualifiers-qual1round3-nac"
+      ]
+    }
+  ]
+}

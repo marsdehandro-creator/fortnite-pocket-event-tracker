@@ -1,12 +1,4 @@
-import type {
-  CompetitiveEvent,
-  CompetitiveEventType,
-  Confidence,
-  Region,
-  TeamFormat,
-  UpdateEvent,
-  UpdateKind,
-} from "../types/events";
+import type { CompetitiveEvent, Confidence, SyncLog, SyncRun, TeamFormat, UpdateEvent, UpdateKind } from "../types/events";
 
 /**
  * Runtime guards for data coming from JSON or an API. Invalid records are dropped (and logged) instead of
@@ -16,15 +8,10 @@ import type {
 export const CONFIDENCE: readonly Confidence[] = ["official", "reported", "estimated"];
 const UPDATE_KINDS: readonly UpdateKind[] = ["season-launch", "patch", "hotfix", "service-maintenance"];
 export const FORMATS: readonly TeamFormat[] = ["solo", "duos", "trios", "squads"];
-const EVENT_TYPES: readonly CompetitiveEventType[] = [
-  "cash-cup",
-  "victory-cup",
-  "fncs",
-  "creator-cup",
-  "ranked-cup",
-  "tournament",
-];
-const REGIONS: readonly Region[] = ["EU", "ME", "NAC", "NAW", "BR", "ASIA", "OCE"];
+/** Tournament types and regions are open-ended (Epic adds new ones); only their shape is checked. */
+export const isTypeSlug = (v: unknown): v is string => typeof v === "string" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v);
+export const isRegionCode = (v: unknown): v is string => typeof v === "string" && /^[A-Z0-9]{2,8}$/.test(v);
+const isStringList = (v: unknown) => v === undefined || (Array.isArray(v) && v.every(isString));
 
 export type Rec = Record<string, unknown>;
 
@@ -62,24 +49,59 @@ export function isCompetitiveEvent(v: unknown): v is CompetitiveEvent {
   return (
     isString(v.id) &&
     isString(v.name) &&
-    isOneOf(EVENT_TYPES, v.type) &&
-    isOneOf(REGIONS, v.region) &&
+    isTypeSlug(v.type) &&
+    isRegionCode(v.region) &&
     isString(v.mode) &&
-    isOneOf(FORMATS, v.format) &&
+    (v.format === undefined || isOneOf(FORMATS, v.format)) &&
     isOptString(v.round) &&
     isIsoWithOffset(v.startsAt) &&
     isIsoWithOffset(v.endsAt) &&
     Date.parse(v.endsAt) > Date.parse(v.startsAt) &&
     Array.isArray(r.regionEligibility) &&
-    r.regionEligibility.every((x) => isOneOf(REGIONS, x)) &&
+    r.regionEligibility.every(isRegionCode) &&
+    isStringList(r.other) &&
     isOptString(r.minRank) &&
     (r.minAccountLevel === undefined || (typeof r.minAccountLevel === "number" && r.minAccountLevel >= 0)) &&
     (r.twoFactorRequired === undefined || typeof r.twoFactorRequired === "boolean") &&
     isOneOf(CONFIDENCE, v.confidence) &&
     isOptString(v.prizePool) &&
     isOptString(v.notes) &&
-    isOptString(v.sourceUrl)
+    isOptString(v.sourceUrl) &&
+    isOptString(v.groupId) &&
+    isOptString(v.sourceId) &&
+    isOptString(v.epicType) &&
+    isOptString(v.roundType) &&
+    isOptString(v.description) &&
+    isOptString(v.rulesUrl) &&
+    isOptString(v.imageUrl) &&
+    isOptString(v.cancelledReason) &&
+    isStringList(v.tags) &&
+    isStringList(v.platforms) &&
+    (v.timeTbd === undefined || typeof v.timeTbd === "boolean") &&
+    (v.cancelled === undefined || typeof v.cancelled === "boolean") &&
+    (v.previousStartsAt === undefined || (Array.isArray(v.previousStartsAt) && v.previousStartsAt.every(isIsoWithOffset))) &&
+    isOptIso(v.firstSeenAt) &&
+    isOptIso(v.lastSeenAt)
   );
+}
+
+function isSyncRun(v: unknown): v is SyncRun {
+  if (!isRecord(v)) return false;
+  const counts = ["discovered", "added", "updated", "unchanged", "rescheduled", "cancelled", "restored", "rejected", "archived"] as const;
+  return (
+    isIsoWithOffset(v.startedAt) &&
+    isIsoWithOffset(v.finishedAt) &&
+    isOneOf(["success", "partial", "failed"] as const, v.status) &&
+    isString(v.source) &&
+    Array.isArray(v.regions) &&
+    counts.every((k) => typeof v[k] === "number" && (v[k] as number) >= 0) &&
+    Array.isArray(v.errors) &&
+    Array.isArray(v.warnings)
+  );
+}
+
+export function isSyncLog(v: unknown): v is SyncLog {
+  return isRecord(v) && isOptIso(v.lastAttemptAt) && isOptIso(v.lastSuccessAt) && Array.isArray(v.runs) && v.runs.every(isSyncRun);
 }
 
 /** Keeps valid records, logs the rest, and de-duplicates by id (first wins). */

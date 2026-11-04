@@ -1,12 +1,4 @@
-import type {
-  CompetitiveEventType,
-  CompetitiveStatus,
-  Confidence,
-  Region,
-  TeamFormat,
-  UpdateKind,
-  UpdateStatus,
-} from "../types/events";
+import type { CompetitiveStatus, Confidence, TeamFormat, UpdateKind, UpdateStatus } from "../types/events";
 import type { DiscoveryCategory, DiscoveryRarity, MapChangeType, PlayStyle } from "../types/intel";
 
 export const UPDATE_STATUS_LABEL: Record<UpdateStatus, string> = {
@@ -18,8 +10,9 @@ export const UPDATE_STATUS_LABEL: Record<UpdateStatus, string> = {
 
 export const EVENT_STATUS_LABEL: Record<CompetitiveStatus, string> = {
   upcoming: "Upcoming",
-  active: "Active",
-  finished: "Finished",
+  active: "Live",
+  finished: "Completed",
+  cancelled: "Cancelled",
 };
 
 export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = {
@@ -29,14 +22,31 @@ export const UPDATE_KIND_LABEL: Record<UpdateKind, string> = {
   "service-maintenance": "Service maintenance",
 };
 
-export const EVENT_TYPE_LABEL: Record<CompetitiveEventType, string> = {
+/** Nicer labels for some known type slugs. Not a whitelist: any other slug is humanised by eventTypeLabel(). */
+const KNOWN_EVENT_TYPE_LABEL: Record<string, string> = {
+  fncs: "FNCS",
   "cash-cup": "Cash Cup",
   "victory-cup": "Victory Cup",
-  fncs: "FNCS",
-  "creator-cup": "Creator Cup",
   "ranked-cup": "Ranked Cup",
-  tournament: "Tournament",
+  "creator-cup": "Creator Cup",
+  "skin-cup": "Skin Cup",
+  lcq: "Last Chance Qualifier",
 };
+
+const ACRONYMS = new Set(["fncs", "zb", "lcq", "og", "pj", "eu", "na", "lan"]);
+
+/** "performance-evaluation" → "Performance Evaluation"; known acronyms stay upper-case. */
+export function humanizeSlug(slug: string): string {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((w) => (ACRONYMS.has(w) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1)))
+    .join(" ");
+}
+
+export function eventTypeLabel(type: string): string {
+  return KNOWN_EVENT_TYPE_LABEL[type] ?? humanizeSlug(type);
+}
 
 export const FORMAT_LABEL: Record<TeamFormat, string> = {
   solo: "Solo",
@@ -47,9 +57,10 @@ export const FORMAT_LABEL: Record<TeamFormat, string> = {
 
 export const FORMATS: TeamFormat[] = ["solo", "duos", "trios", "squads"];
 
-export const REGION_LABEL: Record<Region, string> = {
+const REGION_NAMES: Record<string, string> = {
   EU: "Europe",
   ME: "Middle East",
+  NAE: "NA East",
   NAC: "NA Central",
   NAW: "NA West",
   BR: "Brazil",
@@ -57,8 +68,13 @@ export const REGION_LABEL: Record<Region, string> = {
   OCE: "Oceania",
 };
 
+/** Full region name; unknown codes (a region Epic adds later) show as-is. */
+export function regionLabel(code: string): string {
+  return REGION_NAMES[code] ?? code;
+}
+
 /** Regions South African players normally queue on — highlighted in the UI. */
-export const LOCAL_REGIONS: Region[] = ["EU", "ME"];
+export const LOCAL_REGIONS: string[] = ["EU", "ME"];
 
 export const CONFIDENCE_LABEL: Record<Confidence, string> = {
   official: "Official",

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { TrackerData } from "../types/events";
 import { normalizeText } from "../utils/discoveries";
-import { DISCOVERY_CATEGORY_LABEL, EVENT_TYPE_LABEL, FORMAT_LABEL, MAP_CHANGE_LABEL, UPDATE_KIND_LABEL } from "../utils/labels";
+import { DISCOVERY_CATEGORY_LABEL, eventTypeLabel, FORMAT_LABEL, MAP_CHANGE_LABEL, UPDATE_KIND_LABEL } from "../utils/labels";
 import { formatSASTShortDate } from "../utils/time";
 import { CloseIcon, SearchIcon } from "./Icons";
 import type { FocusKind } from "./Panel";
@@ -39,8 +39,8 @@ function buildIndex(data: TrackerData): Result[] {
       kind: "event",
       id: e.id,
       title: `${e.name}${e.round ? ` · ${e.round}` : ""}`,
-      meta: `${EVENT_TYPE_LABEL[e.type]} · ${FORMAT_LABEL[e.format]} · ${e.region} · ${formatSASTShortDate(e.startsAt)}`,
-      haystack: [e.name, e.round ?? "", e.type, e.format, e.region, e.mode].join(" "),
+      meta: [eventTypeLabel(e.type), e.format && FORMAT_LABEL[e.format], e.region, formatSASTShortDate(e.startsAt), e.cancelled ? "cancelled" : ""].filter(Boolean).join(" · "),
+      haystack: [e.name, e.round ?? "", e.type, eventTypeLabel(e.type), e.format ?? "", e.region, e.mode, ...(e.tags ?? [])].join(" "),
     }),
   );
   data.pois

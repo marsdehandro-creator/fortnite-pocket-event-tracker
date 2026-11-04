@@ -1,7 +1,7 @@
 import type { LiveStatusState } from "../hooks/useLiveStatus";
 import type { TrackerData } from "../types/events";
 import { getCountdown } from "../utils/countdown";
-import { EVENT_TYPE_LABEL, FORMAT_LABEL } from "../utils/labels";
+import { eventTypeLabel, FORMAT_LABEL, LOCAL_REGIONS } from "../utils/labels";
 import { EPIC_STATUS_PAGE } from "../utils/liveStatus";
 import { getCurrentSeason } from "../utils/seasons";
 import { getNextItem, getScheduleStatus } from "../utils/status";
@@ -93,7 +93,9 @@ function StatusCard({ now, data, live }: { now: number; data: TrackerData; live:
 }
 
 function NextCard({ now, data, onFocus }: { now: number; data: TrackerData; onFocus: HeroProps["onFocus"] }) {
-  const next = getNextItem(data.updates, data.events, now);
+  // South African players queue on EU/ME, so those regions' events lead; any region is the fallback.
+  const localEvents = data.events.filter((e) => LOCAL_REGIONS.includes(e.region));
+  const next = getNextItem(data.updates, localEvents, now) ?? getNextItem(data.updates, data.events, now);
   if (!next) {
     return (
       <article className="stat-card">
@@ -104,7 +106,9 @@ function NextCard({ now, data, onFocus }: { now: number; data: TrackerData; onFo
   }
   const isUpdate = next.kind === "update";
   const title = isUpdate ? `${next.item.version ? `v${next.item.version} ` : ""}${next.item.name}` : next.item.name;
-  const meta = isUpdate ? "Downtime" : `${EVENT_TYPE_LABEL[next.item.type]} · ${FORMAT_LABEL[next.item.format]} · ${next.item.region}`;
+  const meta = isUpdate
+    ? "Downtime"
+    : [eventTypeLabel(next.item.type), next.item.format && FORMAT_LABEL[next.item.format], next.item.region].filter(Boolean).join(" · ");
   const c = getCountdown(next.at, now);
   const tiles: [number, string][] = c.days ? [[c.days, "d"], [c.hours, "h"], [c.minutes, "m"]] : [[c.hours, "h"], [c.minutes, "m"], [c.seconds, "s"]];
   const label = next.inProgress ? (isUpdate ? "Happening now · back in" : "Live now · ends in") : isUpdate ? "Next downtime" : "Next event";

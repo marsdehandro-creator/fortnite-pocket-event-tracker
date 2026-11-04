@@ -32,23 +32,24 @@ npm run build      # type-check + production build into dist/
 src/
   components/   UI: TopBar, Hero (stat cards), SeasonIntel, UpdatesPanel, EventsPanel, LandingPanel, DiscoveriesPanel,
                 SearchDialog, Footer, BackgroundArt, Artwork (generated tiles), Icons, shared primitives
-  data/         six JSON data files + dataSource.ts (static/API providers)
-  hooks/        useNow (shared 1s clock), useTrackerData, useLiveStatus (Epic status poll), usePersistentState
+  data/         five hand-maintained JSON files + dataSource.ts, tournamentsSource.ts (runtime fetch)
+  ingest/       Epic tournament normalisation (epic.ts), merge/dedupe/cancel/archive (merge.ts), sync log (syncLog.ts)
+  hooks/        useNow (shared 1s clock), useTrackerData, useTournaments, useLiveStatus (Epic status poll), usePersistentState
   types/        events.ts (updates, cups, TrackerData) · intel.ts (Season, MapDiscovery, POIRanking, MapChange)
   utils/        time (SAST), countdown, status, liveStatus, poi (scoring/ranking), discoveries, seasons, validate*, labels
   styles/       global.css (tokens + primitives) · dashboard.css (layout + components) · art.css (background art)
-public/         favicon, app icons, OG image, web manifest
+scripts/        sync-tournaments.ts (sync CLI) · browser/ extractors run inside fortnite.com pages
+public/         favicon, app icons, OG image, web manifest · data/ synced tournaments, archive, sync log
 docs/           REDESIGN.md — architecture and decisions
 ```
 
 ## Updating the data
 
-All content lives in `src/data/`. Adding a discovery, POI, cup or update never needs a code change: edit the JSON and push. Each file is `{ "updatedAt": "…", "items": [...] }`. Shapes are defined in `src/types/`.
+Hand-maintained content lives in `src/data/`. Tournaments are the exception: they are synced from Epic every 3 days into `public/data/` (see **Tournament sync** below) and fetched by the site at runtime. Adding a discovery, POI or update never needs a code change: edit the JSON and push. Each file is `{ "updatedAt": "…", "items": [...] }`. Shapes are defined in `src/types/`.
 
 | File | Record | What it drives |
 |---|---|---|
 | `updates.json` | `UpdateEvent` | Downtime tracker, hero status |
-| `events.json` | `CompetitiveEvent` | Competitive events |
 | `seasons.json` | `Season` | Season intel strip; which POIs and changes count as current |
 | `discoveries.json` | `MapDiscovery` | Map Discoveries hub |
 | `pois.json` | `POIRanking` | Best Landing Spots |
@@ -69,7 +70,38 @@ Per type:
 - **POIs:** scores are 0–10, and `contestRate` higher = more contested. Scores require a `rationale`. Omit `scores` until there's evidence; the card shows "Awaiting rating". The overall score is computed by `overallScore()` in `src/utils/poi.ts`: loot 30%, competitive 25%, mobility 20%, materials 15%, and 10% for the inverse of contest rate. Locations that leave the map get `"status": "removed"` and are never deleted.
 - **Map changes:** `type` is added | removed | buffed | nerfed | reworked | map-update. Future `date`s show as "Scheduled". Give a change a `poiId` to badge that POI's card.
 
-The `weekly-pocket-tracker-data-refresh` scheduled task (Mondays 09:00 SAST) follows these same rules to keep all six files current.
+The `weekly-pocket-tracker-data-refresh` scheduled task (shown as "Tracker data refresh (every 3 days)") follows these same rules to keep these five files current. It is triggered daily at 11:00 SAST and does a full refresh only when the last successful one is 70+ hours old, so it runs every third day and a failed run retries the next day.
+
+## Tournament sync
+
+Every tournament Epic lists on fortnite.com/competitive is imported automatically. Nothing is hard-coded: the type comes from Epic's own `tournamentType` (e.g. `CashCup` → `cash-cup`), or from the event name when Epic only says "Other". A brand-new kind of event appears with a readable label and lands in the **Other** filter until a filter rule recognises it.
+
+| File | What it holds |
+|---|---|
+| `public/data/tournaments.json` | Current and recent sessions (one record per session per region) |
+| `public/data/tournaments-archive.json` | Sessions that ended more than 45 days ago. History is never deleted |
+| `public/data/sync-log.json` | Every sync attempt: time, status, counts (discovered/added/updated/rescheduled/cancelled…), errors |
+
+How a sync runs (normally done by the scheduled task `tournament-sync-every-3-days`):
+
+1. `npm run sync:tournaments -- --check-due` prints DUE (exit 0) once the last *successful* sync is 72h old, else NOT_DUE (exit 10). The task runs daily and stops on NOT_DUE, so a failed run retries the next day.
+2. In a real browser, open `https://www.fortnite.com/competitive/schedule?region=<R>&lang=en-US` for each region (EU, ME, NAE, NAW, NAC, BR, ASIA, OCE), run `scripts/browser/extract-schedule.js` and append the returned `GZB64:` line to a capture file.
+3. `npm run sync:tournaments -- --groups-needed --input capture.txt` lists event pages whose details (description, Epic type, account level…) aren't stored yet. Open each, run `scripts/browser/extract-event.js` and append its JSON line.
+4. `npm run sync:tournaments -- --input capture.txt` merges. Records are matched by Epic's event-window id, so re-syncs update in place and never duplicate. A changed start time is kept in `previousStartsAt` (shown as Rescheduled). An upcoming session that disappears from a region that synced successfully is marked cancelled, and restored if it comes back.
+5. If the browser can't be used, `npm run sync:tournaments -- --record-failure "reason"` logs the failed attempt and leaves the data untouched.
+
+fortnite.com is protected against automated clients, so the capture must come from a real browser page, never a script or HTTP client.
+
+## Alerts
+
+The bell in the top bar opens per-device alert settings. Nothing is sent until the viewer turns alerts on and grants notification permission. Every alert is local to the device: no accounts, and no server stores subscriptions.
+
+- **What:** tournament sessions and scheduled updates/downtime, each alerted exactly twice: **2 days** and **2 hours** before the start. Viewers filter tournaments by type, region (default EU + ME) and format. "Other" (mostly daily Ranked Cups) is off by default. Several sessions due at once are batched into one notification. Tapping one opens `./?event=<id>`, which reveals that row.
+- **While the site is open** (any tab, even backgrounded): checked every minute, on time.
+- **While it's closed:** `src/sw/sw.ts` (bundled to `./sw.js` by the `service-worker` plugin in `vite.config.ts`) uses Periodic Background Sync. It re-reads `data/tournaments.json` and `data/updates.json` and shows anything due. This only works in Chrome/Edge when the site is installed as an app, and the browser decides how often it runs, so alerts can arrive late. Safari/iOS and Firefox only alert while the site is open. On iPhone, the site must be added to the Home Screen first (iOS 16.4+).
+- **Calendar export:** "Add to calendar" (per row, or all matching events in the settings) downloads an `.ics` with the same two reminders. It's the dependable option, since the phone's calendar fires them with the browser closed.
+- The worker has no fetch handler and caches nothing, so it can never serve a stale site. State lives in IndexedDB (`pocket-tracker-alerts`), and the "already sent" keys stop the page and the worker from alerting twice.
+- Guaranteed delivery to a closed browser would need real Web Push: a small server holding VAPID keys and subscriptions (for example a free Cloudflare Worker). `planDueAlerts()` in `src/notifications/plan.ts` is the piece such a server would reuse.
 
 ## Live data API (optional)
 

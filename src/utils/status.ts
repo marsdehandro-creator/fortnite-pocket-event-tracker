@@ -20,6 +20,7 @@ export const EVENT_STATUS_TONE: Record<CompetitiveStatus, StatusTone> = {
   upcoming: "orange",
   active: "green",
   finished: "grey",
+  cancelled: "red",
 };
 
 const ms = (d: DateInput) => toDate(d).getTime();
@@ -74,6 +75,7 @@ export function rankUpdates(updates: UpdateEvent[], now: DateInput): UpdateWithS
 }
 
 export function getEventStatus(event: CompetitiveEvent, now: DateInput): CompetitiveStatus {
+  if (event.cancelled) return "cancelled";
   const t = ms(now);
   if (t < ms(event.startsAt)) return "upcoming";
   if (t < ms(event.endsAt)) return "active";
@@ -85,9 +87,9 @@ export interface EventWithStatus {
   status: CompetitiveStatus;
 }
 
-const EVENT_ORDER: Record<CompetitiveStatus, number> = { active: 0, upcoming: 1, finished: 2 };
+const EVENT_ORDER: Record<CompetitiveStatus, number> = { active: 0, upcoming: 1, finished: 2, cancelled: 3 };
 
-/** Active → upcoming (soonest first) → finished (most recent first). */
+/** Active → upcoming (soonest first) → finished (most recent first) → cancelled. */
 export function rankEvents(events: CompetitiveEvent[], now: DateInput): EventWithStatus[] {
   return events
     .map((event) => ({ event, status: getEventStatus(event, now) }))
@@ -95,7 +97,7 @@ export function rankEvents(events: CompetitiveEvent[], now: DateInput): EventWit
       const byStatus = EVENT_ORDER[a.status] - EVENT_ORDER[b.status];
       if (byStatus) return byStatus;
       const diff = ms(a.event.startsAt) - ms(b.event.startsAt);
-      return a.status === "finished" ? -diff : diff;
+      return a.status === "finished" || a.status === "cancelled" ? -diff : diff;
     });
 }
 
@@ -139,6 +141,7 @@ export type NextItem =
  */
 export function getNextItem(updates: UpdateEvent[], events: CompetitiveEvent[], now: DateInput): NextItem | null {
   const t = ms(now);
+  events = events.filter((e) => !e.cancelled);
   const activeUpdate = updates.find((u) => t >= ms(u.downtimeStartsAt) && t < getUpdateEnd(u).getTime());
   if (activeUpdate) return { kind: "update", at: getUpdateEnd(activeUpdate), inProgress: true, item: activeUpdate };
 
