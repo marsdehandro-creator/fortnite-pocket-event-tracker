@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { StatusTone } from "../utils/status";
 import { EPIC_STATUS_PAGE } from "../utils/liveStatus";
 import { formatSASTTime, SAST_LABEL } from "../utils/time";
@@ -146,54 +147,57 @@ export function TopBar({ now, tone, onSearch, onOpenSeasonIntel, onOpenAlerts, a
         </button>
       </div>
 
-      {menuOpen && (
-        <div className="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" id="site-menu">
-          <button type="button" className="menu-sheet__scrim" aria-label="Close menu" tabIndex={-1} onClick={() => setMenuOpen(false)} />
-          <div className="menu-sheet__panel">
-            <div className="menu-sheet__head">
-              <span className="menu-sheet__title">Menu</span>
-              <button type="button" className="icon-button" aria-label="Close menu" onClick={() => setMenuOpen(false)} autoFocus>
-                <CloseIcon />
-              </button>
+      {/* Portalled to <body>: the top bar's backdrop-filter would otherwise trap this fixed sheet inside the bar's height. */}
+      {menuOpen &&
+        createPortal(
+          <div className="menu-sheet" role="dialog" aria-modal="true" aria-label="Menu" id="site-menu">
+            <button type="button" className="menu-sheet__scrim" aria-label="Close menu" tabIndex={-1} onClick={() => setMenuOpen(false)} />
+            <div className="menu-sheet__panel">
+              <div className="menu-sheet__head">
+                <span className="menu-sheet__title">Menu</span>
+                <button type="button" className="icon-button" aria-label="Close menu" onClick={() => setMenuOpen(false)} autoFocus>
+                  <CloseIcon />
+                </button>
+              </div>
+              <nav aria-label="All sections">
+                {SECTIONS.map((s) => (
+                  <a key={s.id} href={`#${s.id}`} onClick={() => setMenuOpen(false)}>
+                    {s.label}
+                  </a>
+                ))}
+                <button type="button" onClick={openSeasonIntel}>
+                  Season intel &amp; map changes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onSearch();
+                  }}
+                >
+                  Search
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onOpenAlerts();
+                  }}
+                >
+                  Alerts
+                </button>
+              </nav>
+              <div className="menu-sheet__external">
+                {EXTERNAL.map((l) => (
+                  <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">
+                    {l.label} ↗
+                  </a>
+                ))}
+              </div>
             </div>
-            <nav aria-label="All sections">
-              {SECTIONS.map((s) => (
-                <a key={s.id} href={`#${s.id}`} onClick={() => setMenuOpen(false)}>
-                  {s.label}
-                </a>
-              ))}
-              <button type="button" onClick={openSeasonIntel}>
-                Season intel &amp; map changes
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  onSearch();
-                }}
-              >
-                Search
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  onOpenAlerts();
-                }}
-              >
-                Alerts
-              </button>
-            </nav>
-            <div className="menu-sheet__external">
-              {EXTERNAL.map((l) => (
-                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">
-                  {l.label} ↗
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </header>
   );
 }
