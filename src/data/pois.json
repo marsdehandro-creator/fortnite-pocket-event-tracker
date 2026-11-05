@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-03T17:45:00+02:00",
+  "updatedAt": "2026-11-05T19:30:00+02:00",
   "items": [
     {
       "id": "ss-rocky",
@@ -75,27 +75,28 @@
       "mapArea": "Far north-west",
       "description": "A resort on its own island with a duck-shaped yacht, joined by a bridge toward the northern desert. Cap'n Hatsune Miku and Kasane Teto arrive here on 14 November.",
       "status": "active",
-      "scores": { "loot": 5, "mobility": 4, "materials": 6, "contestRate": 2, "competitive": 6 },
-      "rationale": "The quietest start on the map — isolated in a corner — which suits a safe ranked or tournament drop. The trade-off is a long rotation over a single bridge.",
+      "scores": { "loot": 8, "mobility": 4, "materials": 6, "contestRate": 2, "competitive": 6 },
+      "rationale": "games.gg counts 47 regular chest spawns plus 6 Rare Chest spawns, the most on the map, and a vault on the west beach, so the loot is far better than first thought. It's isolated in the far north-west, which keeps it a quieter start, but the only way out is a long rotation over a single bridge. More players may land here now that chest guides recommend it.",
       "recommendedTeamSizes": ["solo", "duos"],
       "bestFor": ["ranked", "tournament"],
-      "highlights": ["Vault on the west beach", "Changes on 14 Nov"],
-      "confidence": "estimated",
-      "updatedAt": "2026-11-03T17:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "highlights": ["47 chests + 6 Rare Chests", "Vault on the west beach", "Changes on 14 Nov"],
+      "confidence": "reported",
+      "updatedAt": "2026-11-05T19:30:00+02:00",
+      "sourceUrl": "https://games.gg/fortnite/guides/fortnite-all-pirate-treasure-chest-locations/",
+      "chestCount": 47
     },
     {
       "id": "the-chest",
       "name": "The Chest",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "West of the northern desert",
-      "description": "A cluster of islets west of the northern desert. GameRant counts 20+ spawns here, mostly buried Treasure Chests.",
+      "description": "A cluster of islets west of the northern desert, built around buried treasure: games.gg counts 34 buried chest spawns and 10 regular ones (GameRant: 20+).",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
-      "highlights": ["20+ buried Treasure Chests"],
+      "highlights": ["34 buried Treasure Chest spawns"],
       "confidence": "official",
-      "updatedAt": "2026-11-03T17:45:00+02:00",
+      "updatedAt": "2026-11-05T19:30:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -103,27 +104,29 @@
       "name": "Loot Lagoon",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "North-central coast",
-      "description": "Where the river meets the northern coast.",
+      "description": "Where the river meets the northern coast. games.gg counts 26 chest spawns and 4 Rare Chest spawns.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
       "confidence": "official",
-      "updatedAt": "2026-11-01T12:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "updatedAt": "2026-11-05T19:30:00+02:00",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map",
+      "chestCount": 26
     },
     {
       "id": "lil-uzis-stronghold",
       "name": "Lil' Uzi's Stronghold",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "North-east, desert edge",
-      "description": "Lil Uzi Vert's fort at the edge of the desert, beside a large green island. On 7 November Lil Uzi arrives here as a boss with Cuddle Team Leader.",
+      "description": "Lil Uzi Vert's fort at the edge of the desert, beside a large green island. On 7 November Lil Uzi arrives here as a boss with Cuddle Team Leader. games.gg counts 33 chest spawns.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
       "highlights": ["Boss arrives 7 Nov"],
       "confidence": "official",
-      "updatedAt": "2026-11-03T17:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "updatedAt": "2026-11-05T19:30:00+02:00",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map",
+      "chestCount": 33
     },
     {
       "id": "cursed-cavern",
@@ -135,9 +138,9 @@
       "chestCount": 25,
       "recommendedTeamSizes": [],
       "bestFor": [],
-      "highlights": ["25+ chests", "Vault on the west side"],
+      "highlights": ["25+ chests", "2 Rare Chests at in-game noon", "Vault on the west side"],
       "confidence": "official",
-      "updatedAt": "2026-11-03T17:45:00+02:00",
+      "updatedAt": "2026-11-05T19:30:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
@@ -145,14 +148,15 @@
       "name": "Windmill Village",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "South-west island",
-      "description": "Luffy's home town from One Piece, on an island linked to the mainland. Buccaneer Brigand Jones offers a free Heavy Specialist, and Nami gives a free Rift on the beach to the south.",
+      "description": "Luffy's home town from One Piece, on an island linked to the mainland. Buccaneer Brigand Jones offers a free Heavy Specialist, and Nami gives a free Rift on the beach to the south. games.gg counts 29 chest spawns plus a Rare Chest spawn.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
       "highlights": ["Heavy Specialist: Buccaneer Brigand Jones", "Free Rift: Nami", "Vault to the north-east"],
       "confidence": "official",
-      "updatedAt": "2026-11-03T17:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "updatedAt": "2026-11-05T19:30:00+02:00",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map",
+      "chestCount": 29
     },
     {
       "id": "plunder-port",
@@ -174,14 +178,15 @@
       "name": "Busy Bay",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "South-east corner",
-      "description": "Two connected islands in the south-east corner. Sanji gives a free Rift here.",
+      "description": "Two connected islands in the south-east corner. Sanji gives a free Rift here. games.gg counts 29 chest spawns and 4 Rare Chest spawns.",
       "status": "active",
       "recommendedTeamSizes": [],
       "bestFor": [],
       "highlights": ["Free Rift: Sanji", "Vault in the southern cliffs"],
       "confidence": "official",
-      "updatedAt": "2026-11-03T17:45:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "updatedAt": "2026-11-05T19:30:00+02:00",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map",
+      "chestCount": 29
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-03T17:45:00+02:00",
+  "updatedAt": "2026-11-05T19:30:00+02:00",
   "items": [
     {
       "id": "asap-rocky-boss",
@@ -63,9 +63,9 @@
     {
       "id": "map-fragments",
       "title": "Map Fragments: \"one piece of something bigger\"",
-      "summary": "Map Fragments are a weekly collectible: one unlocks each week, and the first is a floor pickup below deck on The $.$. Rocky worth 10,000 XP.",
-      "details": "Week 1: go to the far southern (pointed) end of the battleship and drop to the lowest floor. The fragment sits by a crate, marked with a white diamond icon; break the floor if you can't find the stairs. Guides disagree on the total (six or seven pieces), and nothing confirms the full set opens Captain X's mega chest.",
-      "mapArea": "Week 1: The $.$. Rocky, lower deck",
+      "summary": "Six Map Fragments unlock one a week (10,000 XP each); collecting all six grants the \"X Marks The Zero Point Sliver\" loading screen.",
+      "details": "Week 1 (1 Nov): go to the far southern (pointed) end of The $.$. Rocky and drop to the lowest floor; the fragment sits by a crate, marked with a white diamond icon. Destructoid's schedule for the rest: 7 Nov at Lil' Uzi's Stronghold, 14 Nov at Rubber Resort, 21 Nov on Oscar's ship, then 28 Nov and 5 Dec (locations not announced). Exact spots for weeks 2 onward aren't published yet. Nothing confirms the set opens Captain X's mega chest.",
+      "mapArea": "Week 1: The $.$. Rocky, lower deck; week 2: Lil' Uzi's Stronghold",
       "poiId": "ss-rocky",
       "category": "easter-egg",
       "rarity": "epic",
@@ -74,7 +74,7 @@
       "addedAt": "2026-11-01T12:45:00+02:00",
       "status": "active",
       "confidence": "reported",
-      "sourceUrl": "https://www.destructoid.com/how-to-collect-map-fragment-at-the-ss-rocky-in-fortnite-treasure-hunters/"
+      "sourceUrl": "https://www.destructoid.com/how-to-collect-map-fragments-in-fortnite-treasure-hunters/"
     },
     {
       "id": "choppa-ss-rocky",
@@ -152,8 +152,8 @@
     {
       "id": "vault-keys",
       "title": "Nine vaults opened by Vault Keys",
-      "summary": "Players have found nine vaults on Crossbones Isle. Vault Keys drop at random from Treasure Chests, and picking one up marks the nearest vault on your map.",
-      "details": "Reported spots: Rubber Resort (west beach), behind the waterfall near Loot Lagoon / Fortune's Fort, east Lantern Landing, west Cursed Cavern, the cliff by The $.$. Rocky, south Busy Bay cliffs, north-east of Windmill Village, Loguetown's aqueduct sewers, and under Plunder Port. You can also take a key from a player you eliminate, and the Chester Sprite may improve your odds of finding one. What vaults hold hasn't been documented yet.",
+      "summary": "Players have found nine vaults on Crossbones Isle. Each opens to three Rare Chests and a guaranteed Sprite Chest; Vault Keys drop at random from chests, and picking one up marks the nearest vault.",
+      "details": "Reported spots: Rubber Resort (west beach), behind the waterfall near Loot Lagoon / Fortune's Fort, east Lantern Landing, west Cursed Cavern, the cliff by The $.$. Rocky, south Busy Bay cliffs, north-east of Windmill Village, Loguetown's aqueduct sewers, and under Plunder Port. GameRant's list has Fortune's Fort in place of Plunder Port, so one of those two is unconfirmed. Keys mostly drop from chests; you can also take one from a player you eliminate, levelling the Sweet Dreams Sprite may drop one, and the Chester Sprite may improve your odds.",
       "mapArea": "Island-wide (nine reported locations)",
       "category": "hidden-chest-area",
       "rarity": "epic",
@@ -161,7 +161,8 @@
       "addedAt": "2026-11-03T17:45:00+02:00",
       "status": "active",
       "confidence": "reported",
-      "sourceUrl": "https://techwiser.com/fortnite-treasure-hunters-vault-locations/"
+      "sourceUrl": "https://gamerant.com/fortnite-treasure-hunters-vault-locations-key-how-to-get/",
+      "lootRating": 4
     },
     {
       "id": "free-specialists",
@@ -206,6 +207,22 @@
       "status": "active",
       "confidence": "reported",
       "sourceUrl": "https://gamerant.com/fortnite-treasure-hunters-best-landing-spots-chests-sprites/"
+    },
+    {
+      "id": "cursed-cavern-noon-chests",
+      "title": "Noon Rare Chests in Cursed Cavern",
+      "summary": "At 12 PM in-game, sunlight through the hole in Cursed Cavern's roof lights a patch of grass. Walk into the beam and two Rare Treasure Chests appear.",
+      "details": "The day/night cycle lasts about 18 minutes (roughly 45 seconds per in-game hour), so loot the cavern while you wait for noon. The Rare Chests have better odds of Sprites, Epic or Legendary weapons and Pirate Shop tokens. It only works if the storm and other squads let you stay until noon.",
+      "mapArea": "Cursed Cavern, centre-east",
+      "poiId": "cursed-cavern",
+      "category": "secret-location",
+      "rarity": "rare",
+      "lootRating": 4,
+      "seasonId": "c7-treasure-hunters",
+      "addedAt": "2026-11-05T19:30:00+02:00",
+      "status": "active",
+      "confidence": "reported",
+      "sourceUrl": "https://gamerant.com/fortnite-cursed-cavern-loot-puzzle/"
     }
   ]
 }
