@@ -1,7 +1,44 @@
 {
-  "lastAttemptAt": "2026-11-04T22:15:22+02:00",
-  "lastSuccessAt": "2026-11-04T22:15:22+02:00",
+  "lastAttemptAt": "2026-11-11T21:10:58+02:00",
+  "lastSuccessAt": "2026-11-11T21:10:58+02:00",
   "runs": [
+    {
+      "startedAt": "2026-11-11T21:10:58+02:00",
+      "finishedAt": "2026-11-11T21:10:58+02:00",
+      "status": "success",
+      "source": "epic-schedule (browser)",
+      "regions": [
+        "EU",
+        "ME",
+        "NAE",
+        "NAW",
+        "NAC",
+        "BR",
+        "ASIA",
+        "OCE"
+      ],
+      "discovered": 349,
+      "added": 23,
+      "updated": 326,
+      "unchanged": 0,
+      "rescheduled": 8,
+      "cancelled": 0,
+      "restored": 0,
+      "archived": 0,
+      "rejected": 0,
+      "errors": [],
+      "warnings": [
+        "EU: no event-page details for S43_SoloReloadTestCup, S42_ArenaTestCup, S43_RankedCupReloadDuos_ZB, S43_RankedCupReloadDuos, S43_FNCSSoloReloadQualifiers, S43_RankedCupSolo, S43_RankedCupSolo_ZB, S43_PerformanceEvaluationTrios, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "ME: no event-page details for S42_ArenaTestCup, S43_RankedCupReloadDuos_ZB, S43_RankedCupReloadDuos, S43_FNCSSoloReloadQualifiers, S43_RankedCupSolo_ZB, S43_RankedCupSolo, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "NAE: no event-page details for S43_SoloReloadTestCup, S42_ArenaTestCup, S43_RankedCupReloadDuos, S43_RankedCupReloadDuos_ZB, S43_FNCSSoloReloadQualifiers, S43_RankedCupSolo_ZB, S43_RankedCupSolo, S43_PerformanceEvaluationTrios, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "NAW: no event-page details for S43_SoloReloadTestCup, S42_ArenaTestCup, S43_RankedCupReloadDuos, S43_RankedCupReloadDuos_ZB, S43_FNCSSoloReloadQualifiers, S43_RankedCupSolo, S43_RankedCupSolo_ZB, S43_PerformanceEvaluationTrios, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "NAC: no event-page details for S43_SoloReloadTestCup, S42_ArenaTestCup, S43_RankedCupReloadDuos, S43_RankedCupReloadDuos_ZB, S43_FNCSSoloReloadQualifiers, S43_RankedCupSolo_ZB, S43_RankedCupSolo, S43_PerformanceEvaluationTrios, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "BR: no event-page details for S43_SoloReloadTestCup, S42_ArenaTestCup, S43_RankedCupReloadDuos, S43_RankedCupReloadDuos_ZB, S43_RankedCupSolo_ZB, S43_RankedCupSolo, S43_FNCSSoloReloadQualifiers, S43_ArenaFightNight, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "ASIA: no event-page details for S42_ArenaTestCup, S43_RankedCupReloadDuos_ZB, S43_RankedCupReloadDuos, S43_FNCSSoloReloadQualifiers, S43_RankedCupSolo_ZB, S43_RankedCupSolo, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "OCE: no event-page details for S42_ArenaTestCup, S43_RankedCupReloadDuos_ZB, S43_RankedCupReloadDuos, S43_FNCSSoloReloadQualifiers, S43_RankedCupSolo_ZB, S43_RankedCupSolo, S43_TriosCashCup, S43_ReloadZBDuosCashCup, S43_SquadsVictoryCup, S43_ArenaCashCup, S43_FNCSSoloReload_HeatsStage, S43_FNCSSoloReload_LCQ, S43_FNCSSoloReload_Final (shown without description)",
+        "merged 104 duplicate sightings of the same event across region pages"
+      ]
+    },
     {
       "startedAt": "2026-11-04T22:15:22+02:00",
       "finishedAt": "2026-11-04T22:15:22+02:00",
