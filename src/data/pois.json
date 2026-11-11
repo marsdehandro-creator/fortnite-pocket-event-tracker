@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-05T19:30:00+02:00",
+  "updatedAt": "2026-11-11T20:45:00+02:00",
   "items": [
     {
       "id": "ss-rocky",
@@ -73,15 +73,15 @@
       "name": "Rubber Resort",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "Far north-west",
-      "description": "A resort on its own island with a duck-shaped yacht, joined by a bridge toward the northern desert. Cap'n Hatsune Miku and Kasane Teto arrive here on 14 November.",
+      "description": "A resort on its own island with a duck-shaped yacht, joined by a bridge toward the northern desert. Cap'n Hatsune Miku and Kasane Teto arrive here on 15 November.",
       "status": "active",
       "scores": { "loot": 8, "mobility": 4, "materials": 6, "contestRate": 2, "competitive": 6 },
       "rationale": "games.gg counts 47 regular chest spawns plus 6 Rare Chest spawns, the most on the map, and a vault on the west beach, so the loot is far better than first thought. It's isolated in the far north-west, which keeps it a quieter start, but the only way out is a long rotation over a single bridge. More players may land here now that chest guides recommend it.",
       "recommendedTeamSizes": ["solo", "duos"],
       "bestFor": ["ranked", "tournament"],
-      "highlights": ["47 chests + 6 Rare Chests", "Vault on the west beach", "Changes on 14 Nov"],
+      "highlights": ["47 chests + 6 Rare Chests", "Vault on the west beach", "Changes on 15 Nov"],
       "confidence": "reported",
-      "updatedAt": "2026-11-05T19:30:00+02:00",
+      "updatedAt": "2026-11-11T20:45:00+02:00",
       "sourceUrl": "https://games.gg/fortnite/guides/fortnite-all-pirate-treasure-chest-locations/",
       "chestCount": 47
     },
@@ -118,15 +118,17 @@
       "name": "Lil' Uzi's Stronghold",
       "seasonId": "c7-treasure-hunters",
       "mapArea": "North-east, desert edge",
-      "description": "Lil Uzi Vert's fort at the edge of the desert, beside a large green island. On 7 November Lil Uzi arrives here as a boss with Cuddle Team Leader. games.gg counts 33 chest spawns.",
+      "description": "A walled fort at the edge of the desert in the north-east, east of Loot Lagoon. The in-game label is Fortune's Fort. Since 8 November Lil Uzi Vert holds its west side as a boss. games.gg counts 33 chest spawns and 10 Wanted Poster spawns.",
       "status": "active",
-      "recommendedTeamSizes": [],
-      "bestFor": [],
-      "highlights": ["Boss arrives 7 Nov"],
-      "confidence": "official",
-      "updatedAt": "2026-11-05T19:30:00+02:00",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map",
-      "chestCount": 33
+      "recommendedTeamSizes": ["duos", "trios", "squads"],
+      "bestFor": ["casual"],
+      "highlights": ["Boss: Lil Uzi Vert (Exotic Lil' SMG)", "33 chests", "Medic Specialist: Kawaii Team Leader", "Map Fragment #2 in the shack to the south-east"],
+      "confidence": "estimated",
+      "updatedAt": "2026-11-11T20:45:00+02:00",
+      "sourceUrl": "https://games.gg/fortnite/guides/fortnite-how-to-get-lil-uzi-vert-jr-sprite/",
+      "chestCount": 33,
+      "scores": { "loot": 8, "mobility": 6, "materials": 6, "contestRate": 8, "competitive": 6 },
+      "rationale": "33 chest spawns plus a boss that drops the Exotic Lil' SMG and a guaranteed Lil' Uzi Vert Jr. Sprite, so the loot is close to The $.$. Rocky's. Guides call it a hot zone since the boss arrived, so expect contested landings. Kawaii Team Leader's free Medic and Rift give a way out. Materials and rotation are provisional until competitive drop maps cover it."
     },
     {
       "id": "cursed-cavern",
@@ -138,9 +140,9 @@
       "chestCount": 25,
       "recommendedTeamSizes": [],
       "bestFor": [],
-      "highlights": ["25+ chests", "2 Rare Chests at in-game noon", "Vault on the west side"],
+      "highlights": ["25+ chests", "2 Rare Chests at in-game noon", "Vault on the west side", "13 Wanted Poster spawns (most on the map)"],
       "confidence": "official",
-      "updatedAt": "2026-11-05T19:30:00+02:00",
+      "updatedAt": "2026-11-11T20:45:00+02:00",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {

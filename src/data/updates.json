@@ -1,6 +1,17 @@
 {
-  "updatedAt": "2026-11-05T19:30:00+02:00",
+  "updatedAt": "2026-11-11T20:45:00+02:00",
   "items": [
+    {
+      "id": "v43-10",
+      "name": "v43.10 update",
+      "version": "43.10",
+      "kind": "patch",
+      "downtimeStartsAt": "2026-11-12T11:00:00+02:00",
+      "expectedEndAt": "2026-11-12T12:30:00+02:00",
+      "confidence": "estimated",
+      "notes": "Epic has confirmed a v43.10 update for Thursday 12 November (Epic's Ted Timmins called it \"Thursday's update\") but hasn't posted a downtime time. Outlets expect about 09:00–10:30 UTC (4–5:30 AM ET), based on earlier mid-season updates. Converted to SAST. Times will be corrected once @FortniteStatus posts them.",
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-update"
+    },
     {
       "id": "v43-00-treasure-hunters",
       "name": "Treasure Hunters mini-season",
@@ -22,7 +33,7 @@
       "downtimeStartsAt": "2026-11-10T08:00:00+02:00",
       "expectedEndAt": "2026-11-10T09:30:00+02:00",
       "confidence": "official",
-      "notes": "Back-end maintenance window of up to 90 minutes. Parties, lobbies and matchmaking may be affected.",
+      "notes": "Back-end maintenance window of up to 90 minutes (06:00–07:30 UTC). Parties, lobbies and matchmaking may be affected. Not a Fortnite download. No source has confirmed the actual end time.",
       "sourceUrl": "https://status.epicgames.com/"
     },
     {

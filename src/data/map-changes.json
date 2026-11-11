@@ -1,26 +1,26 @@
 {
-  "updatedAt": "2026-11-05T19:30:00+02:00",
+  "updatedAt": "2026-11-11T20:45:00+02:00",
   "items": [
     {
       "id": "lil-uzis-stronghold-2026-11-07",
-      "date": "2026-11-07T00:00:00+02:00",
+      "date": "2026-11-08T16:00:00+02:00",
       "seasonId": "c7-treasure-hunters",
       "type": "reworked",
-      "title": "Lil Uzi takes over his Stronghold",
-      "description": "Lil Uzi arrives as the second captain boss on 7 November, alongside Cuddle Team Leader. His drops and the exact time aren't announced yet.",
+      "title": "Lil Uzi and Cuddle Team Leader take over the Stronghold",
+      "description": "Week 2 went live on Sunday 8 November at 9 AM ET (16:00 SAST), a day later than first listed. Lil Uzi Vert is now a boss on the fort's west side (in game the fort is labelled Fortune's Fort) and drops the Exotic Lil' SMG and the Lil' Uzi Vert Jr. Sprite.",
       "poiId": "lil-uzis-stronghold",
       "confidence": "reported",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "sourceUrl": "https://games.gg/fortnite/guides/fortnite-how-to-get-lil-uzi-vert-jr-sprite/"
     },
     {
       "id": "megalodon-buggy-2026-11-07",
-      "date": "2026-11-07T00:00:00+02:00",
+      "date": "2026-11-08T16:00:00+02:00",
       "seasonId": "c7-treasure-hunters",
       "type": "map-update",
       "title": "The Megalodon and Buggy arrive",
-      "description": "Both are listed for 7 November. Where they'll appear on the map isn't published yet.",
+      "description": "Epic says Buggy and the Megalodon \"crash onto the Island\" in week 2 (live 8 November, 16:00 SAST). No source has placed them on the map yet; one unconfirmed report mentions a spot called Brutal Beachhead.",
       "confidence": "reported",
-      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
+      "sourceUrl": "https://www.techtroduce.com/fortnite-treasure-hunters-week-2-lil-uzi-vert-buggy"
     },
     {
       "id": "crossbones-isle-launch",
@@ -64,22 +64,22 @@
     },
     {
       "id": "rubber-resort-2026-11-14",
-      "date": "2026-11-14T00:00:00+02:00",
+      "date": "2026-11-15T16:00:00+02:00",
       "seasonId": "c7-treasure-hunters",
       "type": "reworked",
       "title": "Cap'n Hatsune Miku and Kasane Teto take over Rubber Resort",
-      "description": "The resort changes on 14 November, when Miku and Teto arrive as captains. Drops and the exact time aren't announced yet.",
+      "description": "Week 3 brings Miku and Teto to the resort on Sunday 15 November (moved from the 14th). The time is assumed to match week 2 (9 AM ET / 16:00 SAST). Their drops aren't announced yet.",
       "poiId": "rubber-resort",
       "confidence": "reported",
-      "sourceUrl": "https://gamingroute.com/fortnite-bosses-mythics/"
+      "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     },
     {
       "id": "oscar-ship-2026-11-21",
-      "date": "2026-11-21T00:00:00+02:00",
+      "date": "2026-11-22T16:00:00+02:00",
       "seasonId": "c7-treasure-hunters",
       "type": "map-update",
       "title": "Oscar sails in with his own ship",
-      "description": "Oscar arrives on 21 November with a ship of his own and the Frenzy Auto Shotgun. Where the ship will anchor isn't published yet.",
+      "description": "Week 4 (Sunday 22 November, moved from the 21st) brings Oscar's ship, the Frenzy Auto Shotgun and Gold Sprites. The time is assumed to match week 2 (16:00 SAST). Where the ship will anchor isn't published yet.",
       "confidence": "reported",
       "sourceUrl": "https://timesaver.gg/blog/fortnite-treasure-hunters-map"
     }
