@@ -100,8 +100,18 @@ The bell in the top bar opens per-device alert settings. Nothing is sent until t
 - **While the site is open** (any tab, even backgrounded): checked every minute, on time.
 - **While it's closed:** `src/sw/sw.ts` (bundled to `./sw.js` by the `service-worker` plugin in `vite.config.ts`) uses Periodic Background Sync. It re-reads `data/tournaments.json` and `data/updates.json` and shows anything due. This only works in Chrome/Edge when the site is installed as an app, and the browser decides how often it runs, so alerts can arrive late. Safari/iOS and Firefox only alert while the site is open. On iPhone, the site must be added to the Home Screen first (iOS 16.4+).
 - **Calendar export:** "Add to calendar" (per row, or all matching events in the settings) downloads an `.ics` with the same two reminders. It's the dependable option, since the phone's calendar fires them with the browser closed.
-- The worker has no fetch handler and caches nothing, so it can never serve a stale site. State lives in IndexedDB (`pocket-tracker-alerts`), and the "already sent" keys stop the page and the worker from alerting twice.
+- Alert state lives in IndexedDB (`pocket-tracker-alerts`), and the "already sent" keys stop the page and the worker from alerting twice.
 - Guaranteed delivery to a closed browser would need real Web Push: a small server holding VAPID keys and subscriptions (for example a free Cloudflare Worker). `planDueAlerts()` in `src/notifications/plan.ts` is the piece such a server would reuse.
+
+## Install as an app (PWA)
+
+The site is an installable Progressive Web App: `public/manifest.webmanifest` (192px, 512px and maskable icons) plus the service worker, which `src/main.tsx` registers on every visit in production builds.
+
+- **Offline:** pages and data are **network-first**, so the cache is only a fallback when offline and tournaments are never stale online. Hashed build files under `assets/` are cache-first, because their names change every release (the newest 60 are kept). The installed app opens offline with the last-seen data. Caching is compiled out on the dev server (`__SW_CACHE__`). Bump `CACHE` in `src/sw/sw.ts` to force-clear everyone's cache.
+- **Install button** (`src/pwa/install.ts`): appears in the top bar and menu only while the app isn't installed on that device.
+  - **Chrome/Edge/Samsung Internet (Android, desktop):** the browser's `beforeinstallprompt` event triggers the button, and clicking it shows the browser's own install dialog. That event only fires when the site is installable and not installed, so the button disappears once installed (`appinstalled`), when the app is opened from the device, or on later visits. It comes back if the app is uninstalled. Chrome may wait for a tap or ~30 seconds on the page before offering it.
+  - **iPhone/iPad:** there is no install API, so the button opens Share → Add to Home Screen steps. Safari can't see the Home Screen app, which keeps separate storage, so "I've added it" hides the button in Safari from then on. Inside the Home Screen app it never shows.
+  - **Firefox desktop / desktop Safari:** no button. They have no install API, and installing goes through the browser menu.
 
 ## Live data API (optional)
 

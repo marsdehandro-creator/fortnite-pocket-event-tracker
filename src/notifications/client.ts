@@ -1,3 +1,4 @@
+import { isIOS, isStandalone } from "../pwa/platform";
 import type { AlertNotification } from "./plan";
 import { ALERT_SYNC_TAG } from "./runner";
 
@@ -14,13 +15,12 @@ export interface AlertSupport {
 
 export function detectSupport(): AlertSupport {
   if (typeof window === "undefined") return { notifications: false, serviceWorker: false, periodicSync: false, standalone: false, ios: false };
-  const nav = navigator as Navigator & { standalone?: boolean };
   return {
     notifications: "Notification" in window,
     serviceWorker: "serviceWorker" in navigator,
     periodicSync: "serviceWorker" in navigator && "periodicSync" in ServiceWorkerRegistration.prototype,
-    standalone: window.matchMedia?.("(display-mode: standalone)").matches || nav.standalone === true,
-    ios: /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1),
+    standalone: isStandalone(),
+    ios: isIOS(),
   };
 }
 
@@ -34,8 +34,8 @@ interface PeriodicSyncManager {
 }
 const periodicSyncOf = (reg: ServiceWorkerRegistration) => (reg as ServiceWorkerRegistration & { periodicSync?: PeriodicSyncManager }).periodicSync;
 
-/** Registers the (non-caching) service worker that runs background checks and handles alert taps. */
-export async function registerAlertWorker(): Promise<ServiceWorkerRegistration | null> {
+/** Registers the site's service worker (offline app shell, background alert checks, alert taps). Safe to call repeatedly. */
+export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
   if (!("serviceWorker" in navigator)) return null;
   try {
     return await navigator.serviceWorker.register(new URL("sw.js", document.baseURI).href, { scope: "./" });

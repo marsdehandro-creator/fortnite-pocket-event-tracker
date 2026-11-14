@@ -5,7 +5,7 @@ import {
   detectSupport,
   disableBackgroundChecks,
   enableBackgroundChecks,
-  registerAlertWorker,
+  registerServiceWorker,
   showFromPage,
   type AlertSupport,
   type PermissionState,
@@ -53,7 +53,7 @@ export function useAlerts(events: CompetitiveEvent[], updates: UpdateEvent[]): A
   useEffect(() => {
     if (!active) return;
     let cancelled = false;
-    void registerAlertWorker().then(async (reg) => {
+    void registerServiceWorker().then(async (reg) => {
       const ok = await enableBackgroundChecks(reg);
       if (!cancelled) setBackground(ok);
     });
@@ -99,7 +99,7 @@ export function useAlerts(events: CompetitiveEvent[], updates: UpdateEvent[]): A
   const sendTest = useCallback(async () => {
     if (currentPermission() !== "granted") return false;
     try {
-      await registerAlertWorker();
+      await registerServiceWorker();
       await showFromPage({
         tag: "test-alert",
         title: "Alerts are on",

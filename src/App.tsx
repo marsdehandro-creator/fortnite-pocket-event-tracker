@@ -7,12 +7,14 @@ import { Hero } from "./components/Hero";
 import { LandingPanel } from "./components/LandingPanel";
 import type { FocusKind, FocusRequest } from "./components/Panel";
 import { AlertsDialog } from "./components/AlertsDialog";
+import { InstallDialog } from "./components/InstallDialog";
 import { SearchDialog } from "./components/SearchDialog";
 import { SeasonIntel } from "./components/SeasonIntel";
 import { StructuredData } from "./components/StructuredData";
 import { TopBar } from "./components/TopBar";
 import { UpdatesPanel } from "./components/UpdatesPanel";
 import { useAlerts } from "./hooks/useAlerts";
+import { promptInstall, useInstallMode } from "./pwa/install";
 import { useLiveStatus } from "./hooks/useLiveStatus";
 import { useNow } from "./hooks/useNow";
 import { useTrackerData } from "./hooks/useTrackerData";
@@ -33,6 +35,12 @@ export function App() {
   const live = useLiveStatus();
   const [searchOpen, setSearchOpen] = useState(false);
   const [alertsOpen, setAlertsOpen] = useState(false);
+  const [installOpen, setInstallOpen] = useState(false);
+  const installMode = useInstallMode();
+  const install = useCallback(() => {
+    if (installMode === "prompt") void promptInstall();
+    else if (installMode === "ios") setInstallOpen(true);
+  }, [installMode]);
   const alerts = useAlerts(tournaments.events, data.updates);
   const [seasonIntelOpen, setSeasonIntelOpen] = useState(false);
   const [focus, setFocus] = useState<FocusRequest | null>(null);
@@ -94,6 +102,8 @@ export function App() {
         onOpenSeasonIntel={openSeasonIntel}
         onOpenAlerts={() => setAlertsOpen(true)}
         alertsOn={alerts.prefs.enabled && alerts.permission === "granted"}
+        canInstall={installMode !== null}
+        onInstall={install}
       />
       <main id="main" className="page">
         <Hero
@@ -122,6 +132,7 @@ export function App() {
       </main>
       <Footer data={data} />
       <AlertsDialog open={alertsOpen} onClose={() => setAlertsOpen(false)} alerts={alerts} events={tournaments.events} updates={data.updates} now={now} />
+      <InstallDialog open={installOpen} onClose={() => setInstallOpen(false)} />
       <SearchDialog open={searchOpen} data={data} onClose={() => setSearchOpen(false)} onSelect={requestFocus} />
       <StructuredData events={data.events} now={now} />
     </>

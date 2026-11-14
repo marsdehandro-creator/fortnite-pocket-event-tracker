@@ -1800,3 +1800,64 @@
   background: rgba(14, 116, 144, 0.35);
   border: 1px solid rgba(34, 211, 238, 0.35);
 }
+
+/* --------------------------------------------------------------------------
+   Install app (PWA) — shown only while the app isn't installed on this device
+   -------------------------------------------------------------------------- */
+
+.install-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: none;
+  height: 40px;
+  min-width: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  background: rgba(34, 211, 238, 0.1);
+  color: #a5f3fc;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.install-button:hover {
+  background: rgba(34, 211, 238, 0.2);
+  border-color: rgba(34, 211, 238, 0.75);
+}
+.install-button .icon {
+  width: 18px;
+  height: 18px;
+}
+.install-button__label {
+  display: none;
+}
+@media (min-width: 640px) {
+  .install-button {
+    padding: 0 14px;
+    border-radius: 999px;
+  }
+  .install-button__label {
+    display: inline;
+  }
+}
+.install-steps {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 22px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+.install-steps strong {
+  color: var(--text);
+}
+.install-steps__glyph {
+  width: 16px;
+  height: 16px;
+  vertical-align: -3px;
+  color: var(--cyan);
+}

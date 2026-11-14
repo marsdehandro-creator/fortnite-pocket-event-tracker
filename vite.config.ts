@@ -33,8 +33,10 @@ function seoFiles(siteUrl: string): Plugin {
  * updates. Served on the fly by the dev server too.
  */
 function serviceWorker(): Plugin {
-  const bundleWorker = async () => {
+  // Offline caching only in real builds; the dev server's worker never caches.
+  const bundleWorker = async (cache: boolean) => {
     const out = await esbuild({
+      define: { __SW_CACHE__: String(cache) },
       entryPoints: ["src/sw/sw.ts"],
       bundle: true,
       format: "iife",
@@ -54,7 +56,7 @@ function serviceWorker(): Plugin {
         if (path === "/sw.js") {
           res.setHeader("Content-Type", "text/javascript");
           res.setHeader("Cache-Control", "no-cache");
-          res.end(await bundleWorker());
+          res.end(await bundleWorker(false));
         } else if (path === "/data/updates.json") {
           res.setHeader("Content-Type", "application/json");
           res.end(updatesJson());
@@ -62,7 +64,7 @@ function serviceWorker(): Plugin {
       });
     },
     async generateBundle() {
-      this.emitFile({ type: "asset", fileName: "sw.js", source: await bundleWorker() });
+      this.emitFile({ type: "asset", fileName: "sw.js", source: await bundleWorker(true) });
       this.emitFile({ type: "asset", fileName: "data/updates.json", source: updatesJson() });
     },
   };

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import type { StatusTone } from "../utils/status";
 import { EPIC_STATUS_PAGE } from "../utils/liveStatus";
 import { formatSASTTime, SAST_LABEL } from "../utils/time";
-import { BellIcon, ChevronDown, CloseIcon, MenuIcon, SearchIcon } from "./Icons";
+import { BellIcon, ChevronDown, CloseIcon, DownloadIcon, MenuIcon, SearchIcon } from "./Icons";
 
 const SECTIONS = [
   { id: "updates", label: "Updates" },
@@ -25,6 +25,9 @@ interface TopBarProps {
   onOpenAlerts: () => void;
   /** Alerts are switched on for this device (bell shows as active). */
   alertsOn: boolean;
+  /** Show the "Install app" button — only while the app isn't installed on this device. */
+  canInstall: boolean;
+  onInstall: () => void;
 }
 
 /** Highlights the nav link for whichever section is currently in view. */
@@ -46,7 +49,7 @@ function useActiveSection(): string | null {
   return active;
 }
 
-export function TopBar({ now, tone, onSearch, onOpenSeasonIntel, onOpenAlerts, alertsOn }: TopBarProps) {
+export function TopBar({ now, tone, onSearch, onOpenSeasonIntel, onOpenAlerts, alertsOn, canInstall, onInstall }: TopBarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -130,6 +133,12 @@ export function TopBar({ now, tone, onSearch, onOpenSeasonIntel, onOpenAlerts, a
           <span className={`dot dot--${tone}`} />
           {formatSASTTime(now)} <small>{SAST_LABEL}</small>
         </span>
+        {canInstall && (
+          <button type="button" className="install-button" aria-label="Install the app on this device" onClick={onInstall}>
+            <DownloadIcon />
+            <span className="install-button__label">Install app</span>
+          </button>
+        )}
         <button type="button" className="icon-button" aria-label="Search the tracker" onClick={onSearch}>
           <SearchIcon />
         </button>
@@ -186,6 +195,17 @@ export function TopBar({ now, tone, onSearch, onOpenSeasonIntel, onOpenAlerts, a
                 >
                   Alerts
                 </button>
+                {canInstall && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      onInstall();
+                    }}
+                  >
+                    Install app
+                  </button>
+                )}
               </nav>
               <div className="menu-sheet__external">
                 {EXTERNAL.map((l) => (
